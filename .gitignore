@@ -1,4 +1,4 @@
 *
 !.gitignore
 !calling_card_peak_pipeline.py
-!calling_card_peak_plots.ipynb
+!cc_peak_plots.ipynb

@@ -1,0 +1,7 @@
+pandas
+pycallingcards
+pyranges
+matplotlib
+matplotlib-venn
+nbformat
+jupyter

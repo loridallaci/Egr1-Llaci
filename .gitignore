@@ -2,3 +2,5 @@
 !.gitignore
 !calling_card_peak_pipeline.py
 !cc_peak_plots.ipynb
+!README.md
+!requirements.txt

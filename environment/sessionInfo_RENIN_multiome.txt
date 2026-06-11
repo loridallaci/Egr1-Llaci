@@ -1,0 +1,35 @@
+# sessionInfo() for the single-nucleus multiome / RENIN / ChromVAR analysis
+# (01_preprocessing, 03_atac_analysis, 04_integration)
+# Run on a Linux machine (account "lllaci", self-built R in home: /home/lllaci/R-4.2.2),
+# NOT the HTCF cluster. Note: chromVAR and JASPAR2020 were loaded in
+# add_motifs_chromvar.R and are not captured in this particular session.
+
+R version 4.2.2 (2022-10-31)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 22.04.4 LTS
+
+Matrix products: default
+BLAS:   /home/lllaci/R-4.2.2/lib/libRblas.so
+LAPACK: /home/lllaci/R-4.2.2/lib/libRlapack.so
+
+attached base packages:
+[1] stats4    stats     graphics  grDevices utils     datasets  methods   base
+
+other attached packages:
+ [1] ggrepel_0.9.4                      ggplot2_3.4.4
+ [3] BSgenome.Mmusculus.UCSC.mm10_1.4.3 BSgenome_1.66.3
+ [5] rtracklayer_1.58.0                 Biostrings_2.66.0
+ [7] XVector_0.38.0                     GenomicRanges_1.50.2
+ [9] GenomeInfoDb_1.34.9                IRanges_2.32.0
+[11] S4Vectors_0.36.2                   BiocGenerics_0.44.0
+[13] dplyr_1.1.3                        harmony_0.1.1
+[15] Rcpp_1.1.0                         RENIN_1.0
+[17] SeuratWrappers_0.3.0               Signac_1.10.0
+[19] sp_2.0-0                           SeuratObject_4.1.0
+[21] Seurat_4.1.1
+
+# Key versions for Methods:
+#   R 4.2.2 | Seurat 4.1.1 | SeuratObject 4.1.0 | Signac 1.10.0
+#   SeuratWrappers 0.3.0 | RENIN 1.0 | harmony 0.1.1
+#   BSgenome.Mmusculus.UCSC.mm10 1.4.3 | ggplot2 3.4.4 | dplyr 1.1.3
+#   (chromVAR, JASPAR2020 CORE vertebrates, TFBSTools, motifmatchr: record from add_motifs_chromvar.R env)

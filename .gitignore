@@ -1,0 +1,17 @@
+# R
+.Rhistory
+.RData
+.Rapp.history
+.Ruserdata
+*.Rproj
+.Rproj.user/
+
+# Session / scratch
+*.rds.tmp
+*_cache/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini

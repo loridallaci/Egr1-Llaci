@@ -21,7 +21,8 @@ if (!exists("tcga_pheno")) stop("Run 01_load_and_prepare_tcga_data.R first.")
 
 set.seed(42)   # reproducible
 
-output_dir <- "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/enrichment/Egr1CCvsKD/"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/enrichment/Egr1CCvsKD/"
+output_dir <- "output/enrichment/Egr1CCvsKD/"
 
 # "random_genome" = random genes from the whole TCGA matrix (standard control)
 # "reshuffle_within_regulons" = random genes from the pooled regulon universe

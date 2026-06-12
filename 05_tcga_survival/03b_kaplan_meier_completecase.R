@@ -44,7 +44,11 @@ covariates <- c("Recurrence", "Age", "Subtype", "MGMT_status")
 OS_var     <- "survival"
 OS_event   <- "status"
 
-output_dir <- "/home/lllaci/data/tcga_survival_results/km_completecase"
+# --- Paths (edit for your system) ---------------------------------------------
+# GitHub default: relative path, so the repo runs anywhere.
+output_dir <- "output/km_completecase"
+# Lori's laptop run:
+# output_dir <- "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/km_completecase"
 dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 
 # Genes to plot: prefer a single combined list, else the union of the

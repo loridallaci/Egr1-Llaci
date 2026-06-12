@@ -21,9 +21,11 @@ genes_of_interest <- toupper(genes_of_interest)
 # PATHS
 # -----------------------------------------------------------------------------
 
-dat_dir <- "C:/Users/loril/Documents/multivariate_analysis/glioVis"
+# original (author's machine): "C:/Users/loril/Documents/multivariate_analysis/glioVis"
+dat_dir <- "data"
 
-output_dir <- "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/custom_genes/"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/custom_genes/"
+output_dir <- "output/custom_genes/"
 dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 
 # -----------------------------------------------------------------------------

@@ -9,7 +9,8 @@ library(BSgenome.Mmusculus.UCSC.mm10)
 library(ggplot2)
 
 # Work on ChromVar object
-lot6 <- readRDS('/home/lllaci/data/female_male_aggregated_081722_seuratObject_multiome_081721_filtered_012925_withPeaks_chromVARadded_111425.rds')
+# original (author's machine): '/home/lllaci/data/female_male_aggregated_081722_seuratObject_multiome_081721_filtered_012925_withPeaks_chromVARadded_111425.rds'
+lot6 <- readRDS('output/female_male_aggregated_081722_seuratObject_multiome_081721_filtered_012925_withPeaks_chromVARadded_111425.rds')
 obj <- lot6
 DefaultAssay(obj) <- 'RNA'
 # Normalize RNA data
@@ -29,7 +30,8 @@ Fragments(obj[["ATAC"]])
 list()
 
 
-fragpath <- "/home/lllaci/data/atac_fragments.tsv.gz"
+# original (author's machine): "/home/lllaci/data/atac_fragments.tsv.gz"
+fragpath <- "data/atac_fragments.tsv.gz"
 
 frag.obj <- CreateFragmentObject(
   path = fragpath,

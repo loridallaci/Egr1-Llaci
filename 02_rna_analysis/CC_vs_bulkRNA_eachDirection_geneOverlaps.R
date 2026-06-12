@@ -4,12 +4,15 @@
 
 library(dplyr)
 
-base_dir   <- "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/"
-output_dir <- "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/enrichment/Egr1CCvsKD/"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/"
+base_dir   <- "output/"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/enrichment/Egr1CCvsKD/"
+output_dir <- "output/enrichment/Egr1CCvsKD/"
 
 dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 
-de_dir <- "C:/Users/loril/Documents/Egr1/Egr1_bulk_RNAseq/Egr1_KD_030525/diffexp_Egr1KD_again_keepEgr1GuidesSeparate_only0filteredout_removeOutliers"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1_bulk_RNAseq/Egr1_KD_030525/diffexp_Egr1KD_again_keepEgr1GuidesSeparate_only0filteredout_removeOutliers"
+de_dir <- "output"
 
 # =============================================================================
 # STEP 1: Load CC peaks and extract Gene Name1
@@ -106,12 +109,15 @@ cat("Gene set (CC + WT-enriched):", paste(geneset_WT, collapse = ", "), "\n")
 
 library(dplyr)
 
-base_dir   <- "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/"
-output_dir <- "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/enrichment/Egr1CCvsKD/"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/"
+base_dir   <- "output/"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/enrichment/Egr1CCvsKD/"
+output_dir <- "output/enrichment/Egr1CCvsKD/"
 
 dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 
-de_dir <- "C:/Users/loril/Documents/Egr1/Egr1_bulk_RNAseq/Egr1_KD_030525/diffexp_Egr1KD_again_keepEgr1GuidesSeparate_only0filteredout_removeOutliers"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1_bulk_RNAseq/Egr1_KD_030525/diffexp_Egr1KD_again_keepEgr1GuidesSeparate_only0filteredout_removeOutliers"
+de_dir <- "output"
 
 # =============================================================================
 # STEP 1: Load CC peaks and extract Gene Name1

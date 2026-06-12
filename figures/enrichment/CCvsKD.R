@@ -15,9 +15,12 @@ library(dplyr)
 
 # --- Directories --------------------------------------------------------------
 
-peaks_dir  <- "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output"
-de_dir     <- "C:/Users/loril/Documents/Egr1/Egr1_bulk_RNAseq/Egr1_KD_030525/diffexp_Egr1KD_again_keepEgr1GuidesSeparate_only0filteredout_removeOutliers"
-output_dir <- "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/enrichment/Egr1CCvsKD"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output"
+peaks_dir  <- "output"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1_bulk_RNAseq/Egr1_KD_030525/diffexp_Egr1KD_again_keepEgr1GuidesSeparate_only0filteredout_removeOutliers"
+de_dir     <- "data"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/enrichment/Egr1CCvsKD"
+output_dir <- "output/enrichment/Egr1CCvsKD"
 
 dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 

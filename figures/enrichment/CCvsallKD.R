@@ -13,8 +13,10 @@ library(dplyr)
 
 # --- Directories --------------------------------------------------------------
 
-base_dir    <- "C:/Users/loril/Documents/Egr1/Egr1_bulk_RNAseq/Egr1_KD_030525/diffexp_Egr1KD_again_keepEgr1GuidesSeparate_only0filteredout_removeOutliers"
-output_dir  <- "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1_bulk_RNAseq/Egr1_KD_030525/diffexp_Egr1KD_again_keepEgr1GuidesSeparate_only0filteredout_removeOutliers"
+base_dir    <- "data"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output"
+output_dir  <- "output"
 
 # --- Enrichr databases --------------------------------------------------------
 

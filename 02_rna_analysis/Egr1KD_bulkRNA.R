@@ -5,7 +5,8 @@ AGAIN
 1. Determine which samples are outliers first:
   ```{r parameters}
 # Save for another time example of how to set working directory with relative path in RMD
-myWorkingDirectory = "C:/Users/loril/Documents/Egr1/Egr1_bulk_RNAseq/Egr1_KD_030525/"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1_bulk_RNAseq/Egr1_KD_030525/"
+myWorkingDirectory = "."
 figureOutputDirectory = file.path(myWorkingDirectory,"figures_Egr1KD_again_keepEgr1GuidesSeparate_only0filteredout_removeOutliers")
 analysisOutputDirectory = file.path(myWorkingDirectory,"analysis_Egr1KD_again_keepEgr1GuidesSeparate_only0filteredout_removeOutliers")
 metadataDirectory = file.path(myWorkingDirectory,"metadata")

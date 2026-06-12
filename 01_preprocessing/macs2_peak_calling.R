@@ -15,17 +15,21 @@ library(GenomicRanges)
 # ============================================================================
 
 # Path to filtered Seurat object
-seurat_file <- "/path/to/seurat_object_filtered.rds"
+# original (author's machine): "/path/to/seurat_object_filtered.rds"
+seurat_file <- "output/seurat_object_filtered.rds"
 
 # Path to MACS2 executable
-macs2_path <- "/path/to/macs2"  # e.g., "/usr/local/bin/macs2" or "~/anaconda3/bin/macs2"
+# original (author's machine): "/path/to/macs2"
+macs2_path <- "macs2"  # e.g., "/usr/local/bin/macs2" or "~/anaconda3/bin/macs2"
 
 # Output directory
-output_dir <- "/path/to/output"
+# original (author's machine): "/path/to/output"
+output_dir <- "output"
 
 # Blacklist regions (download from ENCODE)
-blacklist_file <- "/path/to/mm10-blacklist.v2.bed"  # For mouse
-# blacklist_file <- "/path/to/hg38-blacklist.v2.bed"  # For human
+# original (author's machine): "/path/to/mm10-blacklist.v2.bed"
+blacklist_file <- "data/mm10-blacklist.v2.bed"  # For mouse
+# blacklist_file <- "data/hg38-blacklist.v2.bed"  # For human  # original: "/path/to/hg38-blacklist.v2.bed"
 
 # ============================================================================
 # LOAD DATA

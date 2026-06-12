@@ -9,8 +9,8 @@ library(ggrepel)
 
 # --- Load object and CRE lists ------------------------------------------------
 
-obj         <- readRDS("/home/lllaci/data/obj_RENIN_processed.rds")
-cre_lists   <- readRDS("/home/lllaci/data/cre_lists_female_male_RENIN.rds")
+obj         <- readRDS("output/obj_RENIN_processed.rds")  # original: "/home/lllaci/data/obj_RENIN_processed.rds"
+cre_lists   <- readRDS("output/cre_lists_female_male_RENIN.rds")  # original: "/home/lllaci/data/cre_lists_female_male_RENIN.rds"
 female_cres <- cre_lists$female_cres
 male_cres   <- cre_lists$male_cres
 

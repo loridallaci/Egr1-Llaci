@@ -1,7 +1,8 @@
 library(eulerr)
 library(gridExtra)
 
-output_dir <- "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/"
+output_dir <- "output/"
 
 n_tcga_genes        <- 12701
 n_sig_male_motifs   <- 567

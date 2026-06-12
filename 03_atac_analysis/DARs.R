@@ -9,7 +9,8 @@ library(dplyr)
 library(BSgenome.Mmusculus.UCSC.mm10)
 library(ggplot2)
 
-lot6 = readRDS("/home/lllaci/data/female_male_aggregated_081722_seuratObject_multiome_081721_filtered_012925_withPeaks_chromVARadded_111425.rds")
+# original (author's machine): "/home/lllaci/data/female_male_aggregated_081722_seuratObject_multiome_081721_filtered_012925_withPeaks_chromVARadded_111425.rds"
+lot6 = readRDS("output/female_male_aggregated_081722_seuratObject_multiome_081721_filtered_012925_withPeaks_chromVARadded_111425.rds")
 obj <- lot6
 DefaultAssay(obj) <- 'RNA'
 
@@ -95,7 +96,7 @@ write.csv(da_peaks, "lot6_MvsF_PeaksNormalized_DifferentialyAccesible_peaks_logf
 ```{r}
 library(GenomicRanges)
 library(EnsDb.Mmusculus.v79)
-da_peaks <- read.csv('C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/Code for figures/Files associated with code/lot6_MvsF_PeaksNormalized_DifferentialyAccesible_peaks.csv')
+da_peaks <- read.csv('output/lot6_MvsF_PeaksNormalized_DifferentialyAccesible_peaks.csv')  # original: 'C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/Code for figures/Files associated with code/lot6_MvsF_PeaksNormalized_DifferentialyAccesible_peaks.csv'
 
 
 make_gr <- function(df) {
@@ -185,7 +186,7 @@ p <- ggplot(da_peaks, aes(
 p
 
 ggsave(
-  filename = "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/Figure1_Jan2026/lot6_MvsF_PeaksNormalized_DifferentialyAccesible_peaks_volcano_log2fc05_padj005_010726.png",
+  filename = "output/lot6_MvsF_PeaksNormalized_DifferentialyAccesible_peaks_volcano_log2fc05_padj005_010726.png",  # original: "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/Figure1_Jan2026/lot6_MvsF_PeaksNormalized_DifferentialyAccesible_peaks_volcano_log2fc05_padj005_010726.png"
   plot = p,
   width = 7,
   height = 6,
@@ -212,6 +213,6 @@ table(da_peaks$significance)
 # save da_peaks to implort into RENIN terminal
 ```{r}
 # Save
-write.csv(da_peaks, "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/Code for figures/Files associated with code/lot6_MvsF_PeaksNormalized_DifferentialyAccesible_peaks_edited.csv", row.names = FALSE)
+write.csv(da_peaks, "output/lot6_MvsF_PeaksNormalized_DifferentialyAccesible_peaks_edited.csv", row.names = FALSE)  # original: "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/Code for figures/Files associated with code/lot6_MvsF_PeaksNormalized_DifferentialyAccesible_peaks_edited.csv"
 
 ```

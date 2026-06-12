@@ -42,7 +42,8 @@ library(survival)
 
 source("05_tcga_survival/utils.R")
 
-output_dir <- "/home/lllaci/data/tcga_survival_results"
+# original (author's machine): "/home/lllaci/data/tcga_survival_results"
+output_dir <- "output/tcga_survival_results"
 
 # --- Load integrated data -----------------------------------------------------
 

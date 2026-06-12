@@ -31,7 +31,7 @@ library(patchwork)
 
 # --- Load object --------------------------------------------------------------
 
-object <- readRDS("/home/lllaci/data/female_male_aggregated_081722_seuratObject_multiome_081721_filtered_012925_withPeaks.rds")
+object <- readRDS("output/female_male_aggregated_081722_seuratObject_multiome_081721_filtered_012925_withPeaks.rds")  # original: "/home/lllaci/data/female_male_aggregated_081722_seuratObject_multiome_081721_filtered_012925_withPeaks.rds"
 
 # --- Assign sex labels --------------------------------------------------------
 # Cell Ranger ARC appends barcode suffixes during aggregation:
@@ -67,6 +67,6 @@ object <- RunChromVAR(
 
 # --- Save ---------------------------------------------------------------------
 
-saveRDS(object, "/home/lllaci/data/female_male_aggregated_081722_seuratObject_multiome_081721_filtered_012925_withPeaks_chromVARadded_111425.rds")
+saveRDS(object, "output/female_male_aggregated_081722_seuratObject_multiome_081721_filtered_012925_withPeaks_chromVARadded_111425.rds")  # original: "/home/lllaci/data/female_male_aggregated_081722_seuratObject_multiome_081721_filtered_012925_withPeaks_chromVARadded_111425.rds"
 
 message("Done. Object saved with motifs and ChromVAR assay.")

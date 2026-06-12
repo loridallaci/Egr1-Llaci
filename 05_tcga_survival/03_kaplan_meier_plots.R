@@ -38,7 +38,8 @@ if (!exists("survival_table_male")) {
   stop("Run 02_multivariate_cox_regression.R first.")
 }
 
-output_dir <- "/home/lllaci/data/tcga_survival_results"
+# original (author's machine): "/home/lllaci/data/tcga_survival_results"
+output_dir <- "output/tcga_survival_results"
 
 # --- Helper: KM plot with Cox annotation -------------------------------------
 

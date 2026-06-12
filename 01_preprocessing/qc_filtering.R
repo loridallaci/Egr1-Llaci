@@ -21,12 +21,14 @@ set.seed(1234)
 # ============================================================================
 
 # Input files from Cell Ranger ARC aggregation
-data_dir <- "/path/to/cellranger_aggr/outs"
+# original (author's machine): "/path/to/cellranger_aggr/outs"
+data_dir <- "data"
 counts_file <- file.path(data_dir, "filtered_feature_bc_matrix.h5")
 fragments_file <- file.path(data_dir, "atac_fragments.tsv.gz")
 
 # Output directory
-output_dir <- "/path/to/output"
+# original (author's machine): "/path/to/output"
+output_dir <- "output"
 figures_dir <- file.path(output_dir, "figures/qc")
 
 # Create output directories if they don't exist
@@ -251,7 +253,7 @@ cat("See 'macs2_peak_calling.R' script for peak calling.\n")
 
 # Uncomment and adjust if MACS2 is available
 # DefaultAssay(seurat_filtered) <- "ATAC"
-# peaks <- CallPeaks(seurat_filtered, macs2.path = '/path/to/macs2')
+# peaks <- CallPeaks(seurat_filtered, macs2.path = 'macs2')  # original: '/path/to/macs2'
 # saveRDS(peaks, file.path(output_dir, "macs2_peaks.rds"))
 
 # ============================================================================

@@ -8,8 +8,10 @@ library(dplyr)
 library(ggVennDiagram)
 library(ggplot2)
 
-de_dir <- "C:/Users/loril/Documents/Egr1/Egr1_bulk_RNAseq/Egr1_KD_030525/diffexp_Egr1KD_again_keepEgr1GuidesSeparate_only0filteredout_removeOutliers"
-output_dir <- "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/enrichment/Egr1KD"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1_bulk_RNAseq/Egr1_KD_030525/diffexp_Egr1KD_again_keepEgr1GuidesSeparate_only0filteredout_removeOutliers"
+de_dir <- "data"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/enrichment/Egr1KD"
+output_dir <- "output/enrichment/Egr1KD"
 
 dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 

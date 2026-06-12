@@ -11,8 +11,10 @@ library(ggplot2)
 # Must run 01_load_and_prepare_tcga_data.R first
 if (!exists("tcga_pheno")) stop("Run 01_load_and_prepare_tcga_data.R first.")
 
-base_dir   <- "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/"
-output_dir <- "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/enrichment/Egr1CCvsKD/"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/"
+base_dir   <- "output/"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/enrichment/Egr1CCvsKD/"
+output_dir <- "output/enrichment/Egr1CCvsKD/"
 
 # =============================================================================
 # STEP 1: Read in overlap gene sets
@@ -201,7 +203,8 @@ cat("\nDone. Results saved to:", output_dir, "\n")
 library(ggplot2)
 library(dplyr)
 
-output_dir <- "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/enrichment/Egr1CCvsKD/"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/enrichment/Egr1CCvsKD/"
+output_dir <- "output/enrichment/Egr1CCvsKD/"
 
 # =============================================================================
 # INPUT: your results in the exact order you specified

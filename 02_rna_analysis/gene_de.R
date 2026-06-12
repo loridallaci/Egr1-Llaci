@@ -1,7 +1,7 @@
 library(Seurat)
 
 # Load object
-lot6 <- readRDS("/home/lllaci/data/female_male_aggregated_081722_seuratObject_multiome_081721_filtered_012925_withPeaks_chromVARadded_111425.rds")
+lot6 <- readRDS("data/female_male_aggregated_081722_seuratObject_multiome_081721_filtered_012925_withPeaks_chromVARadded_111425.rds")  # original: "/home/lllaci/data/female_male_aggregated_081722_seuratObject_multiome_081721_filtered_012925_withPeaks_chromVARadded_111425.rds"
 obj <- lot6
 # Make sure RNA is normalized
 DefaultAssay(obj) <- "RNA"

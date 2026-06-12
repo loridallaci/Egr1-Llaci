@@ -32,7 +32,8 @@ if (!exists("tcga_pheno_male") || !exists("survival_table_male")) {
   stop("Run 01_load_and_prepare_tcga_data.R and 02_multivariate_cox_regression.R first.")
 }
 
-output_dir <- "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/"
+output_dir <- "output/"
 # --- Settings -----------------------------------------------------------------
 
 N_PERM    <- 1000   # Number of permutations (increase to 5000 for publication)

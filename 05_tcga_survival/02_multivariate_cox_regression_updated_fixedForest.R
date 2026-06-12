@@ -90,7 +90,8 @@ create_forest_plot <- function(gene_name, survival_data,
 
 # --- Paths --------------------------------------------------------------------
 
-output_dir <- "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/tcga_all_motifs/"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/tcga_all_motifs/"
+output_dir <- "output/tcga_all_motifs/"
 
 dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 

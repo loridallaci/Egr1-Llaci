@@ -18,8 +18,10 @@ dbs
 
 # --- Directories --------------------------------------------------------------
 
-base_dir         <- "C:/Users/loril/Documents/Egr1/Egr1_bulk_RNAseq/Egr1_KD_030525/diffexp_Egr1KD_again_keepEgr1GuidesSeparate_only0filteredout_removeOutliers"
-OutputDirectory  <- "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/enrichment/Egr1KD"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1_bulk_RNAseq/Egr1_KD_030525/diffexp_Egr1KD_again_keepEgr1GuidesSeparate_only0filteredout_removeOutliers"
+base_dir         <- "output"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/enrichment/Egr1KD"
+OutputDirectory  <- "output/enrichment/Egr1KD"
 
 dbs <- c("WikiPathways_2019_Mouse", "GO_Biological_Process_2023", "GO_Molecular_Function_2023")
 

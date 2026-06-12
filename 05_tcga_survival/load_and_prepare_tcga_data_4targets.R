@@ -40,15 +40,19 @@ library(knitr)
 
 # --- Paths --------------------------------------------------------------------
 
-dat_dir ="C:/Users/loril/Documents/multivariate_analysis/glioVis"
-output_dir <- "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/"
-motif_directory <- "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/TCGA_Custom4Genes/"
+# original (author's machine): "C:/Users/loril/Documents/multivariate_analysis/glioVis"
+dat_dir ="data"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/"
+output_dir <- "output/"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/TCGA_Custom4Genes/"
+motif_directory <- "output/TCGA_Custom4Genes/"
 
 # --- Paths --------------------------------------------------------------------
 library(dplyr)
 
-dat_dir <- "C:/Users/loril/Documents/multivariate_analysis/glioVis"
-#output_dir <- "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/"
+# original (author's machine): "C:/Users/loril/Documents/multivariate_analysis/glioVis"
+dat_dir <- "data"
+#output_dir <- "output/"   # original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/"
 
 # ---------------- LOAD PHENO ----------------
 
@@ -142,7 +146,8 @@ library(survminer)
 
 #source("05_tcga_survival/utils.R")
 
-output_dir <- "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/"
+output_dir <- "output/"
 
 # ---------------- INPUT CHECK ----------------
 
@@ -292,7 +297,8 @@ library(survminer)
 
 # --- Paths --------------------------------------------------------------------
 
-output_dir <- "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/TCGA_Custom4Genes/"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/TCGA_Custom4Genes/"
+output_dir <- "output/TCGA_Custom4Genes/"
 dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 
 # --- Covariates --------------------------------------------------------------

@@ -33,7 +33,7 @@ library(BSgenome.Mmusculus.UCSC.mm10)
 
 # --- Load object --------------------------------------------------------------
 
-lot6 <- readRDS("/home/lllaci/data/female_male_aggregated_081722_seuratObject_multiome_081721_filtered_012925_withPeaks_chromVARadded_111425.rds")
+lot6 <- readRDS("data/female_male_aggregated_081722_seuratObject_multiome_081721_filtered_012925_withPeaks_chromVARadded_111425.rds")  # original: "/home/lllaci/data/female_male_aggregated_081722_seuratObject_multiome_081721_filtered_012925_withPeaks_chromVARadded_111425.rds"
 
 # -----------------------------
 # Setup
@@ -112,9 +112,9 @@ Idents(obj) <- obj$sex
 # -----------------------------
 # Load external DE table
 # -----------------------------
-de_df <- read.csv("/home/lllaci/DE_male_vs_female_allcells_allgenes.csv")
-#de_df <- read.csv("/home/lllaci/DE_male_vs_female_allcells_allgenes_log025.csv")
-#de_df <- read.csv("/home/lllaci/DE_male_vs_female_allcells_allgenes_nologfcthreshhold.csv")
+de_df <- read.csv("data/DE_male_vs_female_allcells_allgenes.csv")  # original: "/home/lllaci/DE_male_vs_female_allcells_allgenes.csv"
+#de_df <- read.csv("data/DE_male_vs_female_allcells_allgenes_log025.csv")  # original: "/home/lllaci/DE_male_vs_female_allcells_allgenes_log025.csv"
+#de_df <- read.csv("data/DE_male_vs_female_allcells_allgenes_nologfcthreshhold.csv")  # original: "/home/lllaci/DE_male_vs_female_allcells_allgenes_nologfcthreshhold.csv"
 gene_list <- de_df$gene[1:100]
 
 
@@ -191,9 +191,9 @@ obj <- RegionStats(obj, genome = BSgenome.Mmusculus.UCSC.mm10)
 
 saveRDS(
   list(female_cres = female_cres, male_cres = male_cres),
-  "/home/lllaci/data/cre_lists_female_male_RENIN.rds"
+  "output/cre_lists_female_male_RENIN.rds"  # original: "/home/lllaci/data/cre_lists_female_male_RENIN.rds"
 )
-saveRDS(obj, "/home/lllaci/data/obj_RENIN_processed.rds")
+saveRDS(obj, "output/obj_RENIN_processed.rds")  # original: "/home/lllaci/data/obj_RENIN_processed.rds"
 
 message("Done. CRE lists and processed object saved.")
 

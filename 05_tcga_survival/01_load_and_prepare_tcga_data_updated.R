@@ -40,9 +40,12 @@ source("05_tcga_survival/utils.R")
 
 # --- Paths --------------------------------------------------------------------
 
-dat_dir ="C:/Users/loril/Documents/multivariate_analysis/glioVis"
-output_dir <- "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/"
-motif_directory <- "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/"
+# original (author's machine): "C:/Users/loril/Documents/multivariate_analysis/glioVis"
+dat_dir ="data"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/"
+output_dir <- "output/"
+# original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/"
+motif_directory <- "output/"
 
 # --- Paths --------------------------------------------------------------------
 #dat_dir    <- "data/"           # user puts their data here

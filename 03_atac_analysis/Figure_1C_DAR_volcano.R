@@ -30,7 +30,7 @@ library(dplyr)
 
 # --- Load data ----------------------------------------------------------------
 
-da_peaks <- read.csv("/home/lllaci/lot6_MvsF_PeaksNormalized_DifferentialyAccesible_peaks_logfc0.csv")
+da_peaks <- read.csv("output/lot6_MvsF_PeaksNormalized_DifferentialyAccesible_peaks_logfc0.csv")  # original: "/home/lllaci/lot6_MvsF_PeaksNormalized_DifferentialyAccesible_peaks_logfc0.csv"
 
 # --- Annotate peaks with nearest gene -----------------------------------------
 
@@ -62,7 +62,7 @@ da_peaks$distance_to_nearest_gene  <- mcols(
 )$distance
 
 # Save annotated peaks
-write.csv(da_peaks, "/home/lllaci/lot6_DAR_peaks_annotated_logfc0.csv", row.names = FALSE)
+write.csv(da_peaks, "output/lot6_DAR_peaks_annotated_logfc0.csv", row.names = FALSE)  # original: "/home/lllaci/lot6_DAR_peaks_annotated_logfc0.csv"
 
 # --- Classify peaks -----------------------------------------------------------
 
@@ -131,7 +131,7 @@ p <- ggplot(da_peaks, aes(
     y     = expression(-log[10]~"(adjusted p-value)")
   )
 
-cairo_pdf("/home/lllaci/DAR_volcano_male_vs_female_logfc0.pdf", width = 7, height = 6)
+cairo_pdf("output/DAR_volcano_male_vs_female_logfc0.pdf", width = 7, height = 6)  # original: "/home/lllaci/DAR_volcano_male_vs_female_logfc0.pdf"
 print(p)
 dev.off()
 

@@ -10,7 +10,7 @@ library(dplyr)
 library(BSgenome.Mmusculus.UCSC.mm10)
 library(ggplot2)
 
-lot6 = readRDS("/home/lllaci/data/female_male_aggregated_081722_seuratObject_multiome_081721_filtered_012925_withPeaks_chromVARadded_111425.rds")
+lot6 = readRDS("data/female_male_aggregated_081722_seuratObject_multiome_081721_filtered_012925_withPeaks_chromVARadded_111425.rds")  # original: "/home/lllaci/data/female_male_aggregated_081722_seuratObject_multiome_081721_filtered_012925_withPeaks_chromVARadded_111425.rds"
 obj <- lot6
 DefaultAssay(obj) <- 'RNA'
 

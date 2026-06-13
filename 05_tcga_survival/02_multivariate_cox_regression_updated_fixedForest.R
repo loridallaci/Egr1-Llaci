@@ -56,7 +56,7 @@ create_forest_plot <- function(gene_name, survival_data,
   
   plot_df <- gene_data %>%
     mutate(
-      signif   = ifelse(Pvalue < 0.05, "p<0.05", "ns"),
+      signif   = ifelse(Pvalue <= 0.05, "p<=0.05", "ns"),
       Variable = factor(Variable, levels = rev(var_order))
     )
   
@@ -75,7 +75,7 @@ create_forest_plot <- function(gene_name, survival_data,
     geom_vline(xintercept = 1, linetype = "dashed", color = "grey40") +
     geom_point(aes(color = signif), size = 4) +
     geom_errorbarh(aes(xmin = Lower95, xmax = Upper95), height = 0.3) +
-    scale_color_manual(values = c("p<0.05" = "red", "ns" = "black")) +
+    scale_color_manual(values = c("p<=0.05" = "red", "ns" = "black")) +
     coord_cartesian(xlim = xlim_range) +
     theme_classic(base_size = 14) +
     theme(

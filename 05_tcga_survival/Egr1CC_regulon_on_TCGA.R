@@ -230,7 +230,7 @@ results_df$Label <- paste0(results_df$Geneset, "\n(", results_df$Dataset, ")")
 results_df$Label <- factor(results_df$Label, levels = rev(results_df$Label))
 
 # Significance marker
-results_df$Significant <- ifelse(results_df$Pvalue < 0.05, "p < 0.05", "p ≥ 0.05")
+results_df$Significant <- ifelse(results_df$Pvalue <= 0.05, "p <= 0.05", "p > 0.05")
 
 # =============================================================================
 # FOREST PLOT
@@ -254,7 +254,7 @@ p <- ggplot(results_df, aes(x = HR, y = Label, color = Significant)) +
             hjust = 0, size = 3.5, color = "black") +
   
   # Colors
-  scale_color_manual(values = c("p < 0.05" = "#E41A1C", "p ≥ 0.05" = "grey40")) +
+  scale_color_manual(values = c("p <= 0.05" = "#E41A1C", "p > 0.05" = "grey40")) +
   
   # Axis labels
   labs(

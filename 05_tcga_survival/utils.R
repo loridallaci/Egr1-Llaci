@@ -350,7 +350,7 @@ run_permutation_test <- function(pheno_data,
   
   # BH correction across all genes
   results$perm_padj <- p.adjust(results$perm_pvalue, method = "BH")
-  results$perm_sig  <- ifelse(results$perm_padj < 0.05, "Yes", "No")
+  results$perm_sig  <- ifelse(results$perm_padj <= 0.05, "Yes", "No")
   
   return(results)
 }

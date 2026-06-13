@@ -120,10 +120,10 @@ cat(sprintf("Genes tested: %d\n", length(geneID_included)))
 for (grp in c("Males", "Females", "All")) {
   sub <- perm_combined %>% filter(Group == grp)
   cat(sprintf(
-    "%s — perm p<0.05: %d | BH-adjusted p<0.05: %d\n",
+    "%s — perm p<=0.05: %d | BH-adjusted p<=0.05: %d\n",
     grp,
-    sum(sub$perm_pvalue < 0.05, na.rm = TRUE),
-    sum(sub$perm_padj   < 0.05, na.rm = TRUE)
+    sum(sub$perm_pvalue <= 0.05, na.rm = TRUE),
+    sum(sub$perm_padj   <= 0.05, na.rm = TRUE)
   ))
 }
 

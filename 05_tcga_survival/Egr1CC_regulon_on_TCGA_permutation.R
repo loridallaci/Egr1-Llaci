@@ -139,7 +139,7 @@ write.csv(scrambled_df, file.path(output_dir, "TCGA_zscore_survival_SCRAMBLED.cs
 scrambled_df$Label <- paste0("SCRAMBLED ", scrambled_df$Geneset,
                              "\n(", scrambled_df$Dataset, ")")
 scrambled_df$Label <- factor(scrambled_df$Label, levels = rev(scrambled_df$Label))
-scrambled_df$Significant <- ifelse(scrambled_df$Pvalue < 0.05, "p < 0.05", "p >= 0.05")
+scrambled_df$Significant <- ifelse(scrambled_df$Pvalue <= 0.05, "p <= 0.05", "p > 0.05")
 
 p_forest <- ggplot(scrambled_df, aes(x = HR, y = Label, color = Significant)) +
   geom_vline(xintercept = 1, linetype = "dashed", color = "grey50", linewidth = 0.7) +
@@ -147,7 +147,7 @@ p_forest <- ggplot(scrambled_df, aes(x = HR, y = Label, color = Significant)) +
   geom_point(size = 4) +
   geom_text(aes(x = max(Upper95) + 1, label = paste0("p = ", signif(Pvalue, 3))),
             hjust = 0, size = 3.5, color = "black") +
-  scale_color_manual(values = c("p < 0.05" = "#E41A1C", "p >= 0.05" = "grey40")) +
+  scale_color_manual(values = c("p <= 0.05" = "#E41A1C", "p > 0.05" = "grey40")) +
   labs(x = "Hazard Ratio (95% CI)", y = NULL, color = NULL,
        title = "Scrambled Gene Set Survival Analysis - TCGA GBM (negative control)") +
   scale_x_continuous(limits = c(0, max(scrambled_df$Upper95) + 4)) +

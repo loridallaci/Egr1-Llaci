@@ -141,8 +141,8 @@ for (comp in comparisons) {
   cat("Saved:", out_path, "\n")
   
   # Count significant genes
-  de_down <- filter(de, log2FoldChange <= -0.5 & pvalue < 0.05)
-  de_up   <- filter(de, log2FoldChange >=  0.5 & pvalue < 0.05)
+  de_down <- filter(de, log2FoldChange <= -0.5 & pvalue <= 0.05)
+  de_up   <- filter(de, log2FoldChange >=  0.5 & pvalue <= 0.05)
   cat("Down:", nrow(de_down), "  Up:", nrow(de_up), "\n")
 }
 
@@ -281,8 +281,8 @@ for (comp in comparisons) {
   cat("Saved:", out_path, "\n")
   
   # Count significant genes
-  de_down <- filter(de, log2FoldChange <= -0.5 & pvalue < 0.05)
-  de_up   <- filter(de, log2FoldChange >=  0.5 & pvalue < 0.05)
+  de_down <- filter(de, log2FoldChange <= -0.5 & pvalue <= 0.05)
+  de_up   <- filter(de, log2FoldChange >=  0.5 & pvalue <= 0.05)
   cat("Down:", nrow(de_down), "  Up:", nrow(de_up), "\n")
 }
 

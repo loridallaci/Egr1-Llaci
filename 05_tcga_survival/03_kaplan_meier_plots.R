@@ -40,6 +40,7 @@ if (!exists("survival_table_male")) {
 
 # original (author's machine): "/home/lllaci/data/tcga_survival_results"
 output_dir <- "output/tcga_survival_results"
+dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 
 # --- Helper: KM plot with Cox annotation -------------------------------------
 

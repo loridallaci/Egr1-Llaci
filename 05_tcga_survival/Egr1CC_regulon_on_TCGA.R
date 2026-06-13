@@ -15,6 +15,7 @@ if (!exists("tcga_pheno")) stop("Run 01_load_and_prepare_tcga_data.R first.")
 base_dir   <- "output/"
 # original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/enrichment/Egr1CCvsKD/"
 output_dir <- "output/enrichment/Egr1CCvsKD/"
+dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 
 # =============================================================================
 # STEP 1: Read in overlap gene sets
@@ -205,6 +206,7 @@ library(dplyr)
 
 # original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/enrichment/Egr1CCvsKD/"
 output_dir <- "output/enrichment/Egr1CCvsKD/"
+dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 
 # =============================================================================
 # INPUT: your results in the exact order you specified

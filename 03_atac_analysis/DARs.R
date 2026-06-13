@@ -9,6 +9,8 @@ library(dplyr)
 library(BSgenome.Mmusculus.UCSC.mm10)
 library(ggplot2)
 
+dir.create("output", showWarnings = FALSE, recursive = TRUE)
+
 # original (author's machine): "/home/lllaci/data/female_male_aggregated_081722_seuratObject_multiome_081721_filtered_012925_withPeaks_chromVARadded_111425.rds"
 lot6 = readRDS("output/female_male_aggregated_081722_seuratObject_multiome_081721_filtered_012925_withPeaks_chromVARadded_111425.rds")
 obj <- lot6

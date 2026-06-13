@@ -29,6 +29,7 @@ fragments_file <- file.path(data_dir, "atac_fragments.tsv.gz")
 # Output directory
 # original (author's machine): "/path/to/output"
 output_dir <- "output"
+dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 figures_dir <- file.path(output_dir, "figures/qc")
 
 # Create output directories if they don't exist

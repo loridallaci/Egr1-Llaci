@@ -19,6 +19,7 @@ library(dplyr)
 base_dir              <- "output"
 # original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output"
 figureOutputDirectory <- "output"
+dir.create(figureOutputDirectory, showWarnings = FALSE, recursive = TRUE)
 
 LOG2FC_CAP <- 4
 
@@ -158,6 +159,7 @@ library(dplyr)
 base_dir              <- "output"
 # original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output"
 figureOutputDirectory <- "output"
+dir.create(figureOutputDirectory, showWarnings = FALSE, recursive = TRUE)
 
 LOG2FC_CAP <- 10
 

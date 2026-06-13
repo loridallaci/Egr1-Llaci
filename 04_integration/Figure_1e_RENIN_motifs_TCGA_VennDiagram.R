@@ -3,6 +3,7 @@ library(gridExtra)
 
 # original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/"
 output_dir <- "output/"
+dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 
 n_tcga_genes        <- 12701
 n_sig_male_motifs   <- 567

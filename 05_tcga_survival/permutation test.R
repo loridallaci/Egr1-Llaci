@@ -34,6 +34,7 @@ if (!exists("tcga_pheno_male") || !exists("survival_table_male")) {
 
 # original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/"
 output_dir <- "output/"
+dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 # --- Settings -----------------------------------------------------------------
 
 N_PERM    <- 1000   # Number of permutations (increase to 5000 for publication)

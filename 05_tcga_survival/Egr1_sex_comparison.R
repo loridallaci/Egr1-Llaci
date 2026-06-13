@@ -13,6 +13,7 @@ if (!exists("tcga_pheno")) stop("Run 01_load_and_prepare_tcga_data.R first.")
 
 # original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/"
 output_dir <- "output/"
+dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 
 gene      <- "EGR1"   # column name in tcga_pheno (uppercased by script 01)
 plot_file <- file.path(output_dir, "EGR1_expression_TCGA_IDHwt_male_vs_female.pdf")

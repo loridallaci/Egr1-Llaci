@@ -23,6 +23,7 @@ set.seed(42)   # reproducible
 
 # original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/enrichment/Egr1CCvsKD/"
 output_dir <- "output/enrichment/Egr1CCvsKD/"
+dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 
 # "random_genome" = random genes from the whole TCGA matrix (standard control)
 # "reshuffle_within_regulons" = random genes from the pooled regulon universe

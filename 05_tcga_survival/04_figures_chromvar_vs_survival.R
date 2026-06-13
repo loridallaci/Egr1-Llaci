@@ -44,6 +44,7 @@ source("05_tcga_survival/utils.R")
 
 # original (author's machine): "/home/lllaci/data/tcga_survival_results"
 output_dir <- "output/tcga_survival_results"
+dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 
 # --- Load integrated data -----------------------------------------------------
 

@@ -28,6 +28,8 @@ library(stringr)
 library(GenomicFeatures)
 library(dplyr)
 
+dir.create("output", showWarnings = FALSE, recursive = TRUE)
+
 # --- Load data ----------------------------------------------------------------
 
 da_peaks <- read.csv("output/lot6_MvsF_PeaksNormalized_DifferentialyAccesible_peaks_logfc0.csv")  # original: "/home/lllaci/lot6_MvsF_PeaksNormalized_DifferentialyAccesible_peaks_logfc0.csv"

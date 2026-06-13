@@ -25,6 +25,7 @@ macs2_path <- "macs2"  # e.g., "/usr/local/bin/macs2" or "~/anaconda3/bin/macs2"
 # Output directory
 # original (author's machine): "/path/to/output"
 output_dir <- "output"
+dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 
 # Blacklist regions (download from ENCODE)
 # original (author's machine): "/path/to/mm10-blacklist.v2.bed"

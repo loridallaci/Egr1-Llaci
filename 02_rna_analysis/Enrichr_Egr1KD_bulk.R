@@ -22,6 +22,7 @@ dbs
 base_dir         <- "output"
 # original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/enrichment/Egr1KD"
 OutputDirectory  <- "output/enrichment/Egr1KD"
+dir.create(OutputDirectory, showWarnings = FALSE, recursive = TRUE)
 
 dbs <- c("WikiPathways_2019_Mouse", "GO_Biological_Process_2023", "GO_Molecular_Function_2023")
 

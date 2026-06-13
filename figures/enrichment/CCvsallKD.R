@@ -17,6 +17,7 @@ library(dplyr)
 base_dir    <- "data"
 # original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output"
 output_dir  <- "output"
+dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 
 # --- Enrichr databases --------------------------------------------------------
 

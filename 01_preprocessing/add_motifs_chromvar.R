@@ -29,6 +29,8 @@ library(BSgenome.Mmusculus.UCSC.mm10)
 library(chromVAR)
 library(patchwork)
 
+dir.create("output", showWarnings = FALSE, recursive = TRUE)
+
 # --- Load object --------------------------------------------------------------
 
 object <- readRDS("output/female_male_aggregated_081722_seuratObject_multiome_081721_filtered_012925_withPeaks.rds")  # original: "/home/lllaci/data/female_male_aggregated_081722_seuratObject_multiome_081721_filtered_012925_withPeaks.rds"

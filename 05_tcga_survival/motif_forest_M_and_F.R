@@ -23,7 +23,7 @@ make_forest <- function(set) {
                Hi = d[["Gene expression HR upper CI female"]],
                p  = d[["Gene expression p value female"]]))
   long <- long[is.finite(long$HR) & is.finite(long$Lo) & is.finite(long$Hi), ]
-  long$Patient <- factor(long$Patient, levels = c("Male TCGA", "Female TCGA"))
+  long$Patient <- factor(long$Patient, levels = c("Female TCGA", "Male TCGA"))  # Female first -> Male dodged on TOP
   ## order TFs by the own-sex multivariate (overall-model) p-value:
   ## most significant (smallest p) on TOP. Male motifs -> male p, female motifs -> female p.
   own_p_col <- if (set == "MaleMotifs") "Multivariate p value male" else "Multivariate p value female"
@@ -45,7 +45,8 @@ make_forest <- function(set) {
          title = paste0(set_label, " - multivariate Cox in TCGA GBM (M vs F patients)"),
          subtitle = "ordered by multivariate overall p-value (most significant on top)",
          caption = "* = gene-expression HR p < 0.05 (Wald test on the Expression term)") +
-    theme_bw() + theme(legend.position = "top")
+    theme_bw() + theme(legend.position = "top") +
+    guides(color = guide_legend(reverse = TRUE))   # show Male first in the legend
   out <- file.path(base, set, paste0(set, "_RENINmotifs_forest_M_and_F.pdf"))
   ggsave(out, p, width = 8, height = 8)
   cat(set, ":", nlevels(long$TF), "TFs ->", out, "\n")

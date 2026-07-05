@@ -28,8 +28,8 @@ dat <- bind_rows(M %>% filter(TF %in% c(shared, male_only)), Fm %>% filter(TF %i
 dat <- dat[!duplicated(dat$TF), ]
 dat$Category <- ifelse(dat$TF %in% shared, "Shared",
                ifelse(dat$TF %in% male_only, "Male-unique", "Female-unique"))
-## order each panel by the TF's own-sex gene-expression (Expression-term) p
-dat$ordp <- ifelse(dat$Category=="Female-unique", dat$p_Female, dat$p_Male)
+## order each panel by the TF's own-sex OVERALL multivariate model p
+dat$ordp <- ifelse(dat$Category=="Female-unique", dat$ovp_Female, dat$ovp_Male)
 
 long <- bind_rows(
   transmute(dat, TF, Category, ordp, Cohort="Male",   HR=HR_Male,   Lo=Lo_Male,   Hi=Hi_Male,   p=p_Male),
@@ -61,11 +61,13 @@ make_plot("Male-unique",   "forest_MaleUnique_MFA.pdf",   "Male-unique RENIN mot
 make_plot("Female-unique", "forest_FemaleUnique_MFA.pdf", "Female-unique RENIN motif TFs - TCGA GBM")
 
 ## ---- supplementary table (all 39 TFs; 23 per sex = 7 shared + 16 unique) ----
-supp <- dat %>% transmute(Category, TF,
+supp <- dat %>%
+  mutate(.ord = ifelse(Category=="Female-unique", ovp_Female, ovp_Male)) %>%   # own-sex overall model p
+  arrange(factor(Category, levels=c("Shared","Male-unique","Female-unique")), .ord) %>%
+  transmute(Category, TF,
   HR_male=round(HR_Male,3),   CI_low_male=round(Lo_Male,3),   CI_high_male=round(Hi_Male,3),   p_male=signif(p_Male,3),
   HR_female=round(HR_Female,3),CI_low_female=round(Lo_Female,3),CI_high_female=round(Hi_Female,3),p_female=signif(p_Female,3),
-  HR_all=round(HR_All,3),     CI_low_all=round(Lo_All,3),     CI_high_all=round(Hi_All,3),     p_all=signif(p_All,3)) %>%
-  arrange(factor(Category, levels=c("Shared","Male-unique","Female-unique")), p_male)
+  HR_all=round(HR_All,3),     CI_low_all=round(Lo_All,3),     CI_high_all=round(Hi_All,3),     p_all=signif(p_All,3))
 write.csv(supp, file.path(outdir,"SupplTable_TCGA_TFs_shared_unique.csv"), row.names=FALSE)
 openxlsx::write.xlsx(supp, file.path(outdir,"SupplTable_TCGA_TFs_shared_unique.xlsx"))
 cat("\nShared:", length(shared), " Male-unique:", length(male_only), " Female-unique:", length(female_only),

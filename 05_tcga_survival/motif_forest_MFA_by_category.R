@@ -28,7 +28,8 @@ dat <- bind_rows(M %>% filter(TF %in% c(shared, male_only)), Fm %>% filter(TF %i
 dat <- dat[!duplicated(dat$TF), ]
 dat$Category <- ifelse(dat$TF %in% shared, "Shared",
                ifelse(dat$TF %in% male_only, "Male-unique", "Female-unique"))
-dat$ordp <- ifelse(dat$Category=="Female-unique", dat$ovp_Female, dat$ovp_Male)
+## order each panel by the TF's own-sex gene-expression (Expression-term) p
+dat$ordp <- ifelse(dat$Category=="Female-unique", dat$p_Female, dat$p_Male)
 
 long <- bind_rows(
   transmute(dat, TF, Category, ordp, Cohort="Male",   HR=HR_Male,   Lo=Lo_Male,   Hi=Hi_Male,   p=p_Male),

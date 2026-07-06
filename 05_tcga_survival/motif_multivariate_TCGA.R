@@ -7,13 +7,11 @@
 ## For each motif set (MaleMotifs, FemaleMotifs) x cohort (Males, Females, All):
 ##   per-gene multivariate Cox  Surv(survival,status) ~ Expression +
 ##     Recurrence + Age + Subtype + MGMT_status
-## Outputs per set (mirrors the original folder layout):
-##   cox_long_<set>_<cohort>.csv          (Gene, Variable, HR, Lower95, Upper95, SE, Pvalue)
+## Outputs per set (wide format only; long format dropped as redundant):
 ##   cox_wide_<set>_<cohort>.csv          (1 row/TF; suffix MM/MF/MA, FM/FF/FA)
 ##   cox_wide_<set>_COMBINED.csv          (3 cohorts joined)
 ##   cox_wide_<set>_COMBINED_allTFs.xlsx  (pretty: Motif + Expression HR/CI/SE/p, male & female)
-##   forest_plots/forest_<TF>_<cohort>.pdf
-##   km_plots/KM_<TF>_<cohort>.pdf
+##   km_plots/KM_<TF>_<cohort>.pdf        (ONLY for genes in km_genes, set below)
 ## =====================================================================
 
 suppressMessages({
@@ -32,6 +30,10 @@ tcga_rds_dir <- "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/
 
 all_covarID <- c("Recurrence", "Age", "Subtype", "MGMT_status")
 OS_var <- "survival"; OS_event <- "status"
+
+## KM plots are written ONLY for these genes (uppercase). Edit freely -
+## e.g. drop "ZIC1" later to keep just EGR1.
+km_genes <- c("EGR1", "ZIC1")
 
 ## ---- 1. TCGA: All / male / female pheno (RDS fast-path) --------------
 fact <- function(df){ for(c in c("Recurrence","Subtype","MGMT_status")) df[[c]] <- factor(df[[c]]); df }
@@ -90,13 +92,6 @@ allg <- unique(unlist(genesets))
 tcga_all <- add_binary(tcga_all, allg); tcga_m <- add_binary(tcga_m, allg); tcga_f <- add_binary(tcga_f, allg)
 
 ## ---- 4. Cox helpers (same logic as Regulon_TCGA_multivariate_052726.R)
-relabel_long <- function(v) {
-  v <- gsub("MGMT_statusUnmethylated", "MGMT (unmethylated)",    v)
-  v <- gsub("RecurrenceRecurrent",     "Recurrence (recurrent)", v)
-  v <- gsub("RecurrenceSecondary",     "Recurrence (secondary)", v)
-  v <- gsub("SubtypeMesenchymal",      "Mesenchymal Subtype",    v)
-  v <- gsub("SubtypeProneural",        "Proneural Subtype",      v); v
-}
 relabel_wide <- function(v, gene) {
   v <- gsub(gene, "Expression", v, fixed = TRUE)
   v <- gsub("MGMT_statusUnmethylated", "MGMT_Unmethylated",    v)
@@ -104,22 +99,6 @@ relabel_wide <- function(v, gene) {
   v <- gsub("RecurrenceSecondary",     "Recurrence_Secondary", v)
   v <- gsub("SubtypeMesenchymal",      "Subtype_Mesenchymal",  v)
   v <- gsub("SubtypeProneural",        "Subtype_Proneural",    v); v
-}
-cox_long <- function(pheno, genes) {
-  res <- list()
-  for (g in genes) {
-    if (!g %in% colnames(pheno)) next
-    fm <- as.formula(paste0("Surv(",OS_var,",",OS_event,") ~ `", g, "` + ", paste(all_covarID, collapse="+")))
-    fit <- tryCatch(coxph(fm, data = pheno), error = function(e) NULL); if (is.null(fit)) next
-    s <- summary(fit); co <- as.data.frame(s$coefficients); ci <- as.data.frame(s$conf.int)
-    for (v in rownames(co)) {
-      lab <- if (v == paste0("`",g,"`") || v == g) g else relabel_long(v)
-      res[[paste(g,v)]] <- data.frame(Gene=g, Variable=lab,
-        HR=ci[v,"exp(coef)"], Lower95=ci[v,"lower .95"], Upper95=ci[v,"upper .95"],
-        SE=co[v,"se(coef)"], Pvalue=co[v,"Pr(>|z|)"], stringsAsFactors=FALSE)
-    }
-  }
-  bind_rows(res)
 }
 cox_wide <- function(pheno, genes, suffix) {
   wide <- list()
@@ -141,44 +120,22 @@ cox_wide <- function(pheno, genes, suffix) {
   }
   bind_rows(wide)
 }
-forest_plot <- function(gene, long, ttl) {
-  gd <- long %>% filter(Gene == gene); if (!nrow(gd)) return(NULL)
-  ord <- c(gene,"Age","MGMT (unmethylated)","Recurrence (recurrent)","Recurrence (secondary)",
-           "Mesenchymal Subtype","Proneural Subtype")
-  ord <- ord[ord %in% gd$Variable]
-  gd <- gd %>% mutate(sig=ifelse(Pvalue<0.05,"p<0.05","ns"), Variable=factor(Variable, levels=rev(ord)))
-  ggplot(gd, aes(HR, Variable)) +
-    geom_vline(xintercept=1, linetype="dashed", color="grey40") +
-    geom_point(aes(color=sig), size=4) +
-    geom_errorbarh(aes(xmin=Lower95, xmax=Upper95), height=0.3) +
-    scale_color_manual(values=c("p<0.05"="red","ns"="black")) +
-    theme_classic(base_size=14) +
-    theme(legend.position="none", axis.title.y=element_blank(), plot.title=element_text(hjust=.5, face="bold")) +
-    xlab("Hazard Ratio") + ggtitle(paste0(gene, ttl))
-}
-
 ## ---- 5. main loop: set x cohort -------------------------------------
 datasets <- list(Males=tcga_m, Females=tcga_f, All=tcga_all)
 for (set in names(genesets)) {
   genes <- genesets[[set]]
-  sub <- file.path(outtop, set); pf <- file.path(sub,"forest_plots"); kf <- file.path(sub,"km_plots")
-  for (d in c(sub,pf,kf)) dir.create(d, showWarnings=FALSE, recursive=TRUE)
+  sub <- file.path(outtop, set); kf <- file.path(sub,"km_plots")
+  for (d in c(sub,kf)) dir.create(d, showWarnings=FALSE, recursive=TRUE)
   wide_list <- list()
   for (coh in names(datasets)) {
     ph <- datasets[[coh]]
     suffix <- paste0(substr(set,1,1), substr(coh,1,1))   # MM/MF/MA, FM/FF/FA
-    lng <- cox_long(ph, genes)
-    write.csv(lng, file.path(sub, paste0("cox_long_",set,"_",coh,".csv")), row.names=FALSE)
     wd  <- cox_wide(ph, genes, suffix)
     write.csv(wd,  file.path(sub, paste0("cox_wide_",set,"_",coh,".csv")), row.names=FALSE)
     wide_list[[coh]] <- if (nrow(wd)) dplyr::rename(wd, !!paste0("Overall_pvalue_",coh) := Overall_pvalue) else NULL
-    ## forest plots
-    for (g in genes) tryCatch({
-      p <- forest_plot(g, lng, paste0(" | ",set," | ",coh))
-      if (!is.null(p)) ggsave(file.path(pf, paste0("forest_",g,"_",coh,".pdf")), p, width=6, height=4)
-    }, error=function(e) NULL)
-    ## KM plots (median split)
+    ## KM plots (median split) - only for the genes in km_genes (e.g. EGR1, ZIC1)
     if (have_surv) for (g in genes) {
+      if (!toupper(g) %in% km_genes) next
       bc <- paste0(g,"_binary"); if (!bc %in% colnames(ph)) next
       tryCatch({
         fit <- survminer::surv_fit(as.formula(paste0("Surv(",OS_var,",",OS_event,") ~ ",bc)), data=ph)

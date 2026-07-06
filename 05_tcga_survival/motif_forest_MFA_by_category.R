@@ -6,7 +6,7 @@
 ## with HR/CI/p in male, female and all TCGA patients).
 ## Reads cox_wide_<set>_COMBINED.csv made by motif_multivariate_TCGA.R.
 ## =====================================================================
-suppressMessages({library(dplyr); library(tidyr); library(ggplot2); library(openxlsx)})
+suppressMessages({library(dplyr); library(tidyr); library(ggplot2)})
 base   <- "C:/Users/loril/Documents/GitHub/Egr1-Llaci/05_tcga_survival/motif_multivariate_TCGA"
 outdir <- file.path(base, "forest_by_TFcategory"); dir.create(outdir, showWarnings = FALSE)
 
@@ -69,6 +69,5 @@ supp <- dat %>%
   HR_female=round(HR_Female,3),CI_low_female=round(Lo_Female,3),CI_high_female=round(Hi_Female,3),p_female=signif(p_Female,3),
   HR_all=round(HR_All,3),     CI_low_all=round(Lo_All,3),     CI_high_all=round(Hi_All,3),     p_all=signif(p_All,3))
 write.csv(supp, file.path(outdir,"SupplTable_TCGA_TFs_shared_unique.csv"), row.names=FALSE)
-openxlsx::write.xlsx(supp, file.path(outdir,"SupplTable_TCGA_TFs_shared_unique.xlsx"))
 cat("\nShared:", length(shared), " Male-unique:", length(male_only), " Female-unique:", length(female_only),
     " | total", nrow(dat), "\nWrote plots + SupplTable to:", outdir, "\n")

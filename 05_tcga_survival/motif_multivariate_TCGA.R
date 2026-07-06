@@ -7,10 +7,10 @@
 ## For each motif set (MaleMotifs, FemaleMotifs) x cohort (Males, Females, All):
 ##   per-gene multivariate Cox  Surv(survival,status) ~ Expression +
 ##     Recurrence + Age + Subtype + MGMT_status
-## Outputs per set (wide format only; long format dropped as redundant):
-##   cox_wide_<set>_<cohort>.csv          (1 row/TF; suffix MM/MF/MA, FM/FF/FA)
-##   cox_wide_<set>_COMBINED.csv          (3 cohorts joined)
-##   cox_wide_<set>_COMBINED_allTFs.xlsx  (pretty: Motif + Expression HR/CI/SE/p, male & female)
+## Outputs per set (only the joined COMBINED tables are written; per-cohort
+## and long tables dropped as redundant - COMBINED is the join of all cohorts):
+##   cox_wide_<set>_COMBINED.csv          (3 cohorts joined; 1 row/TF, MM/MF/MA, FM/FF/FA)
+##   cox_wide_<set>_COMBINED_allTFs.csv   (pretty: Motif + Expression HR/CI/SE/p, male & female)
 ##   km_plots/KM_<TF>_<cohort>.pdf        (ONLY for genes in km_genes, set below)
 ## =====================================================================
 
@@ -18,7 +18,6 @@ suppressMessages({
   library(dplyr); library(tidyr); library(survival); library(ggplot2)
 })
 have_surv <- requireNamespace("survminer", quietly = TRUE)
-have_xlsx <- requireNamespace("openxlsx",  quietly = TRUE)
 
 ## ---- Paths ----------------------------------------------------------
 base   <- "C:/Users/loril/Documents/GitHub/Egr1-Llaci/05_tcga_survival"
@@ -130,8 +129,7 @@ for (set in names(genesets)) {
   for (coh in names(datasets)) {
     ph <- datasets[[coh]]
     suffix <- paste0(substr(set,1,1), substr(coh,1,1))   # MM/MF/MA, FM/FF/FA
-    wd  <- cox_wide(ph, genes, suffix)
-    write.csv(wd,  file.path(sub, paste0("cox_wide_",set,"_",coh,".csv")), row.names=FALSE)
+    wd  <- cox_wide(ph, genes, suffix)   # per-cohort table kept in memory only (COMBINED is the join)
     wide_list[[coh]] <- if (nrow(wd)) dplyr::rename(wd, !!paste0("Overall_pvalue_",coh) := Overall_pvalue) else NULL
     ## KM plots (median split) - only for the genes in km_genes (e.g. EGR1, ZIC1)
     if (have_surv) for (g in genes) {
@@ -168,7 +166,6 @@ for (set in names(genesets)) {
     `Gene expression HR upper CI female`   = .data[[paste0("Expression_Upper95_",si,"F")]],
     `Gene expression HR standard error female` = .data[[paste0("Expression_SE_",si,"F")]],
     `Gene expression p value female`       = .data[[paste0("Expression_pvalue_",si,"F")]])
-  if (have_xlsx) openxlsx::write.xlsx(pretty, file.path(sub, paste0("cox_wide_",set,"_COMBINED_allTFs.xlsx")))
   write.csv(pretty, file.path(sub, paste0("cox_wide_",set,"_COMBINED_allTFs.csv")), row.names=FALSE)
   cat(set, "done ->", sub, "\n")
 }

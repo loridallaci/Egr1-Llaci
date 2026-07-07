@@ -5,8 +5,7 @@
 ## ChIPseeker annotation of the lot6 multiome peaks:
 ##   plotAnnoBar  -> % promoter / 5'UTR / 3'UTR / exon / intron /
 ##                   downstream / distal-intergenic
-##   plotAnnoPie  -> same, pie
-##   plotDistToTSS-> distance-to-TSS distribution
+## (bar plot only; the pie and distance-to-TSS panels are not used.)
 ##
 ## Done for: all peaks (per sex) AND the sex-biased DAR peaks
 ##   (Male-up / Female-up, from DARs.R).
@@ -41,16 +40,12 @@ lot6 <- readRDS(rds_path)
 lot6$sex <- ifelse(grepl("-1$", colnames(lot6)), "female",
              ifelse(grepl("-2$", colnames(lot6)), "male", NA))
 
-## ---- helper: annotate a GRanges + write the 3 plots -----------------
+## ---- helper: annotate a GRanges + write the bar plot ----------------
 annotate_and_plot <- function(gr, tag, title = tag) {
   pa <- annotatePeak(gr, TxDb = txdb, tssRegion = tss_region,
                      annoDb = "org.Mm.eg.db", verbose = FALSE)
   pdf(file.path(fig_dir, paste0("ATAC_peaks_annoBar_",   tag, ".pdf")), width = 10, height = 6)
   print(plotAnnoBar(pa, title = title));      dev.off()
-  pdf(file.path(fig_dir, paste0("ATAC_peaks_annoPie_",   tag, ".pdf")), width = 8,  height = 8)
-  plotAnnoPie(pa, main = title);              dev.off()
-  pdf(file.path(fig_dir, paste0("ATAC_peaks_distToTSS_", tag, ".pdf")), width = 10, height = 6)
-  print(plotDistToTSS(pa, title = paste0(title, ": distance to TSS"))); dev.off()
   invisible(pa)
 }
 

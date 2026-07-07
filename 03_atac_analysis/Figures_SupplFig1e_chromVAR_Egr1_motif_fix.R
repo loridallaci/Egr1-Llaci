@@ -82,14 +82,30 @@ zscores <- chromVAR::deviationScores(dev)                                # 1 x c
 if (is.null(rownames(zscores))) rownames(zscores) <- egr1_id
 obj[["chromvar"]] <- CreateAssayObject(data = zscores)
 
-## ---- 5. FeaturePlot of EGR1 motif activity on RPCA UMAP, by sex ----
+## ---- 5. EGR1 motif activity on the RPCA UMAP, by sex --------------
+## Plot from a data frame so BOTH sexes share ONE colour scale and the panel
+## matches Fig 1b's RPCA-UMAP-by-sex layout. (Seurat FeaturePlot(split.by=)
+## rescales each facet independently, which hid the male-vs-female difference.)
 DefaultAssay(obj) <- "chromvar"
 feat <- rownames(zscores)[1]
-p <- FeaturePlot(obj, features = feat, reduction = "umap.RPCA",
-                 split.by = "sex", order = TRUE, pt.size = 0.4) &
-     scale_colour_gradientn(colours = c("#3B4CC0", "grey90", "#B40426")) &
-     theme(legend.position = "right")
-p <- p & patchwork::plot_annotation(title = "EGR1 motif activity (chromVAR)")
+emb  <- Embeddings(obj, "umap.RPCA")
+dfp  <- data.frame(umapRPCA_1 = emb[,1], umapRPCA_2 = emb[,2],
+                   sex = factor(obj$sex, levels = c("female","male")),
+                   activity = as.numeric(GetAssayData(obj, assay="chromvar", slot="data")[feat, ]))
+dfp  <- dfp[order(abs(dfp$activity)), ]                          # extreme cells on top
+lim  <- as.numeric(ceiling(quantile(abs(dfp$activity), 0.99)))   # symmetric robust cap
+p <- ggplot(dfp, aes(umapRPCA_1, umapRPCA_2, colour = activity)) +
+  geom_point(size = 0.7) + facet_wrap(~ sex) +
+  scale_colour_gradient2(low = "#3B4CC0", mid = "grey92", high = "#B40426", midpoint = 0,
+                         limits = c(-lim, lim), oob = scales::squish, name = "EGR1 motif\nactivity (z)") +
+  coord_fixed() +
+  labs(title = paste0("EGR1 motif activity (chromVAR, ", feat, ")"),
+       x = "umapRPCA_1", y = "umapRPCA_2") +
+  theme_classic(base_size = 16) +
+  theme(plot.title = element_text(size = 18, face = "bold"), axis.title = element_text(size = 16),
+        axis.text = element_text(size = 14), strip.text = element_text(size = 16, face = "bold"),
+        strip.background = element_blank(),
+        legend.title = element_text(size = 14), legend.text = element_text(size = 14))
 ggsave(file.path(gitout, "SupplFig1e_chromVAR_Egr1motif_RPCA.pdf"), p, width = 10, height = 5)
 
 ## ---- 6. save small git-friendly table -----------------------------

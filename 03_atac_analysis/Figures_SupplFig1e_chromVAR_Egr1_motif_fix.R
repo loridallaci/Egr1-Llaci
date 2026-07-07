@@ -93,11 +93,11 @@ dfp  <- data.frame(umapRPCA_1 = emb[,1], umapRPCA_2 = emb[,2],
                    sex = factor(obj$sex, levels = c("female","male")),
                    activity = as.numeric(GetAssayData(obj, assay="chromvar", slot="data")[feat, ]))
 dfp  <- dfp[order(abs(dfp$activity)), ]                          # extreme cells on top
-lim  <- as.numeric(ceiling(quantile(abs(dfp$activity), 0.99)))   # symmetric robust cap
+lim  <- as.numeric(ceiling(max(abs(dfp$activity))))   # full range -> graded red, no saturation
 p <- ggplot(dfp, aes(umapRPCA_1, umapRPCA_2, colour = activity)) +
   geom_point(size = 0.7) + facet_wrap(~ sex) +
-  scale_colour_gradient2(low = "#3B4CC0", mid = "grey92", high = "#B40426", midpoint = 0,
-                         limits = c(-lim, lim), oob = scales::squish, name = "EGR1 motif\nactivity (z)") +
+  scale_colour_gradient2(low = "#2166AC", mid = "#F7F7F7", high = "#D6604D", midpoint = 0,
+                         limits = c(-lim, lim), name = "EGR1 motif\nactivity (z)") +
   coord_fixed() +
   labs(title = paste0("EGR1 motif activity (chromVAR, ", feat, ")"),
        x = "umapRPCA_1", y = "umapRPCA_2") +

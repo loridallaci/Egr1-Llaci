@@ -20,15 +20,14 @@ set.seed(1234)
 # SET PATHS - UPDATE THESE FOR YOUR SYSTEM
 # ============================================================================
 
-# Input files from Cell Ranger ARC aggregation
-# original (author's machine): "/path/to/cellranger_aggr/outs"
-data_dir <- "data"
+# Input files from Cell Ranger ARC aggregation (lot6 / 081721, local copy of the
+# HTCF aggregate /lts/.../multiome_081721_analysis/multiome_081721_aggregated/outs/)
+data_dir <- "C:/Users/loril/Documents/data/multiome_081721_aggregated_data_analysis"
 counts_file <- file.path(data_dir, "filtered_feature_bc_matrix.h5")
 fragments_file <- file.path(data_dir, "atac_fragments.tsv.gz")
 
-# Output directory
-# original (author's machine): "/path/to/output"
-output_dir <- "output"
+# Output directory (git repo)
+output_dir <- "C:/Users/loril/Documents/GitHub/Egr1-Llaci/01_preprocessing/output"
 dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 figures_dir <- file.path(output_dir, "figures/qc")
 

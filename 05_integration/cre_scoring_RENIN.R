@@ -1,5 +1,5 @@
 # =============================================================================
-# 04_integration_analysis: CRE Scoring using RENIN
+# 05_integration_analysis: CRE Scoring using RENIN
 # =============================================================================
 # Description:
 #   Identifies cis-regulatory elements (CREs) associated with sex-biased

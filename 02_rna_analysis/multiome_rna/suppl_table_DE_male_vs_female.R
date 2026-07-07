@@ -9,7 +9,7 @@
 ##   female-higher DE sets (adjusted p, consistent with the rest of the paper).
 base   <- "C:/Users/loril/Documents/GitHub/Egr1-Llaci"
 in_csv <- file.path(base, "data output", "DE_male_vs_female_allcells_allgenes.csv")
-out_csv<- file.path(base, "02_rna_analysis", "multiome_rna", "SupplTable_multiome_DE_male_vs_female.csv")
+out_csv<- file.path(base, "02_rna_analysis", "multiome_rna", "output", "tables", "SupplTable_multiome_DE_male_vs_female.csv")
 
 de <- read.csv(in_csv, stringsAsFactors = FALSE, check.names = FALSE)
 is_sig <- de$p_val_adj <= 0.05 & abs(de$avg_log2FC) >= 0.5

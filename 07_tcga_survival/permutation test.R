@@ -1,5 +1,5 @@
 # =============================================================================
-# 05_tcga_survival: 02b - Permutation Test for Multivariate Cox Regression
+# 07_tcga_survival: 02b - Permutation Test for Multivariate Cox Regression
 # =============================================================================
 # Description:
 #   For each TF/gene, tests whether its prognostic effect in the multivariate
@@ -25,7 +25,7 @@
 library(survival)
 library(dplyr)
 
-source("05_tcga_survival/utils.R")
+source("07_tcga_survival/utils.R")
 
 # Ensure upstream results are available
 if (!exists("tcga_pheno_male") || !exists("survival_table_male")) {

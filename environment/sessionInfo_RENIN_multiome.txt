@@ -1,5 +1,5 @@
 # sessionInfo() for the single-nucleus multiome / RENIN / ChromVAR analysis
-# (01_preprocessing, 03_atac_analysis, 04_integration)
+# (01_preprocessing, 03_atac_analysis, 05_integration)
 # Run on a Linux machine (account "lllaci", self-built R in home: /home/lllaci/R-4.2.2),
 # NOT the HTCF cluster. Note: chromVAR and JASPAR2020 were loaded in
 # add_motifs_chromvar.R and are not captured in this particular session.

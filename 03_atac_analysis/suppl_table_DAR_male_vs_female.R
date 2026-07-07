@@ -10,7 +10,7 @@
 ##   the RNA DE table (adjusted p, consistent across the paper).
 base   <- "C:/Users/loril/Documents/GitHub/Egr1-Llaci"
 in_csv <- file.path(base, "data output", "lot6_DAR_peaks_annotated.csv")
-out_csv<- file.path(base, "03_atac_analysis", "SupplTable_ATAC_DAR_male_vs_female.csv")
+out_csv<- file.path(base, "03_atac_analysis", "output", "tables", "SupplTable_ATAC_DAR_male_vs_female.csv")
 
 da <- read.csv(in_csv, stringsAsFactors = FALSE, check.names = FALSE)
 is_sig <- da$p_val_adj <= 0.05 & abs(da$avg_log2FC) >= 0.5

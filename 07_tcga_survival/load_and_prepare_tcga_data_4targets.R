@@ -1,12 +1,12 @@
 # =============================================================================
-# 05_tcga_survival: 01 - Load and Prepare TCGA Data
+# 07_tcga_survival: 01 - Load and Prepare TCGA Data
 # =============================================================================
 # Description:
 #   Loads TCGA GBM phenotype and expression data, filters to IDH wild-type
 #   samples, matches samples between datasets, adds gene expression to
 #   phenotype data frame, and splits into sex-stratified subsets.
 #
-# Run order (within 05_tcga_survival):
+# Run order (within 07_tcga_survival):
 #   1. 01_load_and_prepare_tcga_data.R   <-- this script
 #   2. 02_multivariate_cox_regression.R
 #   3. 03_kaplan_meier_plots.R
@@ -36,7 +36,7 @@ library(dplyr)
 library(rlang)
 library(knitr)
 
-#source("05_tcga_survival/utils.R")
+#source("07_tcga_survival/utils.R")
 
 # --- Paths --------------------------------------------------------------------
 
@@ -144,7 +144,7 @@ library(dplyr)
 library(ggplot2)
 library(survminer)
 
-#source("05_tcga_survival/utils.R")
+#source("07_tcga_survival/utils.R")
 
 # original (author's machine): "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/github code/output/"
 output_dir <- "output/"
@@ -224,7 +224,7 @@ cat("DONE — 4-gene Cox pipeline complete\n")
 
 ******************************************************************************
   # =============================================================================
-# 05_tcga_survival: 02 - Multivariate Cox Regression (4-GENE FIXED VERSION)
+# 07_tcga_survival: 02 - Multivariate Cox Regression (4-GENE FIXED VERSION)
 # =============================================================================
 create_forest_plot <- function(gene_name, survival_data,
                                title_suffix = "",
@@ -290,7 +290,7 @@ library(tidyr)
 library(ggplot2)
 library(survminer)
 
-#source("05_tcga_survival/utils.R")
+#source("07_tcga_survival/utils.R")
 
 #if (!exists("tcga_pheno_male")) {
 #  stop("Run 01_load_and_prepare_tcga_data.R first.")

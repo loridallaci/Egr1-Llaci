@@ -1,10 +1,10 @@
 # =============================================================================
-# 05_tcga_survival: Utility Functions
+# 07_tcga_survival: Utility Functions
 # =============================================================================
 # Description:
 #   Helper functions used across all TCGA survival analysis scripts.
 #   Source this file at the top of each script:
-#   source("05_tcga_survival/utils.R")
+#   source("07_tcga_survival/utils.R")
 #
 # Functions:
 #   - Coxph.HR.CI()          : Extract HR and 95% CI from coxph object

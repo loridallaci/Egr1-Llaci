@@ -1,5 +1,5 @@
 # =============================================================================
-# 05_tcga_survival: 03b - Kaplan-Meier Plots on the COMPLETE-CASE (adjusted) sample
+# 07_tcga_survival: 03b - Kaplan-Meier Plots on the COMPLETE-CASE (adjusted) sample
 # =============================================================================
 # Description:
 #   Standard KM plots (03_kaplan_meier_plots.R) are drawn on every patient with

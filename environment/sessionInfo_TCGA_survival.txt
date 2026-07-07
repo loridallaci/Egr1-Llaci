@@ -1,4 +1,4 @@
-# sessionInfo() for the TCGA-GBM clinical survival analysis (05_tcga_survival)
+# sessionInfo() for the TCGA-GBM clinical survival analysis (07_tcga_survival)
 # Run locally on Windows 11 (R 4.3.3).
 
 R version 4.3.3 (2024-02-29 ucrt)

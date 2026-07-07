@@ -1,5 +1,5 @@
 # =============================================================================
-# 05_tcga_survival: 03 - Kaplan-Meier Plots
+# 07_tcga_survival: 03 - Kaplan-Meier Plots
 # =============================================================================
 # Description:
 #   Generates Kaplan-Meier survival plots for each TF in geneID_included,
@@ -29,7 +29,7 @@ library(survminer)
 library(ggplot2)
 library(dplyr)
 
-source("05_tcga_survival/utils.R")
+source("07_tcga_survival/utils.R")
 
 if (!exists("tcga_pheno_male2")) {
   stop("Run 01_load_and_prepare_tcga_data.R first.")

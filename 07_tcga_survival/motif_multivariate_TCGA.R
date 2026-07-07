@@ -20,7 +20,7 @@ suppressMessages({
 have_surv <- requireNamespace("survminer", quietly = TRUE)
 
 ## ---- Paths ----------------------------------------------------------
-base   <- "C:/Users/loril/Documents/GitHub/Egr1-Llaci/05_tcga_survival"
+base   <- "C:/Users/loril/Documents/GitHub/Egr1-Llaci/07_tcga_survival"
 md     <- file.path(base, "data_motifs")
 outtop <- file.path(base, "motif_multivariate_TCGA")
 dir.create(outtop, showWarnings = FALSE, recursive = TRUE)

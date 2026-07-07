@@ -7,7 +7,7 @@
 ## Reads cox_wide_<set>_COMBINED.csv made by motif_multivariate_TCGA.R.
 ## =====================================================================
 suppressMessages({library(dplyr); library(tidyr); library(ggplot2)})
-base   <- "C:/Users/loril/Documents/GitHub/Egr1-Llaci/05_tcga_survival/motif_multivariate_TCGA"
+base   <- "C:/Users/loril/Documents/GitHub/Egr1-Llaci/07_tcga_survival/motif_multivariate_TCGA"
 outdir <- file.path(base, "forest_by_TFcategory"); dir.create(outdir, showWarnings = FALSE)
 
 read_set <- function(set){

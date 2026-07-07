@@ -1,5 +1,5 @@
 # =============================================================================
-# 05_tcga_survival: 04 - ChromVAR Activity vs Survival Figures
+# 07_tcga_survival: 04 - ChromVAR Activity vs Survival Figures
 # =============================================================================
 # Description:
 #   Integrates RENIN ChromVAR motif activity scores (male - female) with
@@ -40,7 +40,7 @@ library(pheatmap)
 library(patchwork)
 library(survival)
 
-source("05_tcga_survival/utils.R")
+source("07_tcga_survival/utils.R")
 
 # original (author's machine): "/home/lllaci/data/tcga_survival_results"
 output_dir <- "output/tcga_survival_results"

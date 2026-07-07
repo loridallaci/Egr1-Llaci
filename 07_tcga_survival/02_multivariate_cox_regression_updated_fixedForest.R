@@ -1,5 +1,5 @@
 # =============================================================================
-# 05_tcga_survival: 02 - Multivariate Cox Regression
+# 07_tcga_survival: 02 - Multivariate Cox Regression
 # (Forest plots use AUTO-SCALING x-axis from 4-gene script)
 # =============================================================================
 # Logic:
@@ -20,7 +20,7 @@ library(tidyr)
 library(ggplot2)
 library(survminer)
 
-source("05_tcga_survival/utils.R")
+source("07_tcga_survival/utils.R")
 
 if (!exists("tcga_pheno_male")) {
   stop("Run 01_load_and_prepare_tcga_data.R first.")

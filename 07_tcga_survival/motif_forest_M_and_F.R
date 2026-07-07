@@ -7,7 +7,7 @@
 ## =====================================================================
 suppressMessages({library(dplyr); library(ggplot2)})
 
-base   <- "C:/Users/loril/Documents/GitHub/Egr1-Llaci/05_tcga_survival/motif_multivariate_TCGA"
+base   <- "C:/Users/loril/Documents/GitHub/Egr1-Llaci/07_tcga_survival/motif_multivariate_TCGA"
 
 make_forest <- function(set) {
   d <- read.csv(file.path(base, set, paste0("cox_wide_", set, "_COMBINED_allTFs.csv")), check.names = FALSE)

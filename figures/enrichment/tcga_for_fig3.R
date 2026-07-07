@@ -1,5 +1,5 @@
 # =============================================================================
-# 05_tcga_survival: CUSTOM GENES — MULTIVARIATE COX + FOREST + KM
+# 07_tcga_survival: CUSTOM GENES — MULTIVARIATE COX + FOREST + KM
 # =============================================================================
 
 library(survival)
@@ -8,7 +8,7 @@ library(tidyr)
 library(ggplot2)
 library(survminer)
 
-source("05_tcga_survival/utils.R")
+source("07_tcga_survival/utils.R")
 
 # -----------------------------------------------------------------------------
 # USER INPUT (YOUR GENES HERE)

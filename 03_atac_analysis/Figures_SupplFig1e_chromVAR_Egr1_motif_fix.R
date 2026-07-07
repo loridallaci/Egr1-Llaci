@@ -37,6 +37,24 @@ obj <- RunUMAP(obj, reduction = "integrated.RPCA", dims = 1:30,
                reduction.name = "umap.RPCA", reduction.key = "umapRPCA_")
 obj[["RNA"]] <- JoinLayers(obj[["RNA"]])
 
+## ---- ALSO emit the RNA UMAP by sex from THIS SAME embedding --------
+## Panel 1b (RNA) and panel 1e (EGR1 motif) are BOTH drawn from this one
+## umap.RPCA, so they share an identical layout by construction (no separate
+## UMAP run to diverge). Use these two PDFs together as the matched pair.
+emb0 <- Embeddings(obj, "umap.RPCA")
+rna_df <- data.frame(umapRPCA_1 = emb0[,1], umapRPCA_2 = emb0[,2],
+                     sex = factor(obj$sex, levels = c("female","male")))
+pr <- ggplot(rna_df, aes(umapRPCA_1, umapRPCA_2, colour = sex)) +
+  geom_point(size = 0.7) + facet_wrap(~ sex) +
+  scale_colour_manual(values = c(female = "#F39AC9", male = "#4A6FE3"), guide = "none") +
+  coord_fixed() +
+  labs(title = "RNA UMAP (RPCA-integrated), by sex", x = "umapRPCA_1", y = "umapRPCA_2") +
+  theme_classic(base_size = 16) +
+  theme(plot.title = element_text(size = 18, face = "bold"), axis.title = element_text(size = 16),
+        axis.text = element_text(size = 14), strip.text = element_text(size = 16, face = "bold"),
+        strip.background = element_blank())
+ggsave(file.path(gitout, "SupplFig1b_RNA_UMAP_RPCA_bySex_matched.pdf"), pr, width = 10, height = 5)
+
 ## ---- 2. Add motifs (same as add_motifs_chromvar.R) -----------------
 suppressMessages({ library(JASPAR2020); library(TFBSTools); library(BSgenome.Mmusculus.UCSC.mm10); library(chromVAR) })
 setMethod("rowSums", "CsparseMatrix", function(x, na.rm = FALSE, dims = 1, ...) {

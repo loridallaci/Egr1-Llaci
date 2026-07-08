@@ -12,7 +12,8 @@ montage is panel **c**; cell-number bar = a, RNA/ATAC UMAPs = b — see
 | Script | Step | Runs |
 |--------|------|------|
 | `cortex_dev_build_objects.R` | **STEP 0.** Per stage, from the deposited Roussos Cell Ranger ARC outputs: build RNA + ATAC object (hg38) → QC filter → MACS2 peaks → add `peaks` assay → save `<Stage>_aggregated_object_Roussos_112223_RNAandPeakAssaysAvailable.rds`. | **HTCF cluster** (MACS2 + full fragment files). Submit with `srun`/`sbatch`. |
-| `cortex_dev_RENIN_pipeline.R` | Full RENIN pipeline: per stage, Harmony (batch = sex) → DEGs (F vs M) → pseudocells → `run_peak_aen` → split CREs into male-/female-enriched → `FindMotifs` → per-panel volcano. Writes `<Stage>_<Sex>_AllCells_all_motifs.csv`. (Motifs added to the STEP 0 objects first — see its "STAGE 0" header.) | **HTCF cluster** (Seurat/Signac/RENIN + large `*_withMotifs_V4` Seurat objects). Submit with `srun`/`sbatch`. |
+| `cortex_dev_add_motifs.R` | **STEP 1.** Per stage, add JASPAR2020 CORE vertebrate motifs to the `peaks` assay (`AddMotifs`), assign sex, convert RNA to Seurat v4 → save `<Stage>_..._withMotifs_V4_122825.rds`. | **HTCF cluster.** Submit with `srun`/`sbatch`. |
+| `cortex_dev_RENIN_pipeline.R` | **STEP 2.** Full RENIN pipeline: per stage, Harmony (batch = sex) → DEGs (F vs M) → pseudocells → `run_peak_aen` → split CREs into male-/female-enriched → `FindMotifs` → per-panel volcano. Writes `<Stage>_<Sex>_AllCells_all_motifs.csv`. | **HTCF cluster** (Seurat/Signac/RENIN + large `*_withMotifs_V4` Seurat objects). Submit with `srun`/`sbatch`. |
 | `Figure_SupplFig1_RENIN_motif_montage.R` | Plot-only: reads the 10 motif tables and assembles the 2×5 volcano montage (Supp Fig. 2c). | **Locally**, in seconds. No HTCF data needed. |
 | `Figure_SupplFig2_cellnumbers_umaps.R` | Supp Fig. 2 panels a/b: cell numbers by stage×sex + per-stage RNA (RPCA) / ATAC (rLSI) UMAPs coloured by sex. Full 5-stage run on HTCF via `run_SupplFig2_cellnumbers_umaps_HTCF.sbatch`. | Local preview = 3 stages; full 5 stages on **HTCF**. |
 
@@ -45,7 +46,23 @@ Deposits: GEO **GSE204684** (raw + Cell Ranger outputs), Broad Single Cell Porta
 `output/panels/`. Green = significant (`p.adjust ≤ 0.05`); top-20 motifs per
 panel labeled.
 
-## Reproduce the figure
+## Full pipeline (download → figures), all six stages incl. Adol/Adult
+
+Every script below loops over all stages (`EaFet, LaFet, Inf, Child, Adol, Adult`);
+Adol/Adult are handled identically — they are only "special" in that their large
+objects live on HTCF, not locally.
+
+1. **Download** (manual): fetch the per-stage 10X Multiome Cell Ranger ARC outputs
+   (`filtered_feature_bc_matrix.h5` + `atac_fragments.tsv.gz`) from GEO **GSE204684**
+   (or Broad SCP1859 / the `dual-assay` S3). One sample per stage.
+2. `cortex_dev_build_objects.R` → `<Stage>_..._RNAandPeakAssaysAvailable.rds` (HTCF).
+3. `cortex_dev_add_motifs.R` → `<Stage>_..._withMotifs_V4_122825.rds` (HTCF).
+4. `cortex_dev_RENIN_pipeline.R` → 10 `<Stage>_<Sex>_AllCells_all_motifs.csv` (HTCF).
+5. Figures: `Figure_SupplFig1_RENIN_motif_montage.R` (panel c, local) and
+   `Figure_SupplFig2_cellnumbers_umaps.R` (panels a/b; all 5 stages via
+   `sbatch run_SupplFig2_cellnumbers_umaps_HTCF.sbatch`).
+
+## Reproduce the montage figure (fast, local)
 
 ```sh
 Rscript 06_cortex_development/Figure_SupplFig1_RENIN_motif_montage.R

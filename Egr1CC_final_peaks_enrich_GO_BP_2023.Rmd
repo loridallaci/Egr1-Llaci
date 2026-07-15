@@ -1,0 +1,85 @@
+---
+title: "Egr1CC Enrichr GO_Biological_Process_2023 (for Windows)"
+output: html_document
+---
+
+```{r setup, include=TRUE}
+# Setup: load libraries
+if (!requireNamespace("enrichR", quietly = TRUE)) {
+  install.packages("enrichR", repos = "https://cloud.r-project.org")
+}
+if (!requireNamespace("readr", quietly = TRUE)) install.packages("readr")
+if (!requireNamespace("dplyr", quietly = TRUE)) install.packages("dplyr")
+if (!requireNamespace("ggplot2", quietly = TRUE)) install.packages("ggplot2")
+
+library(enrichR)
+library(readr)
+library(dplyr)
+library(ggplot2)
+
+# Set Enrichr databases; limit to GO_Biological_Process_2023
+dbs <- c("GO_Biological_Process_2023")
+
+# Output directory
+outdir <- "output/enrich_results"
+dir.create(outdir, recursive = TRUE, showWarnings = FALSE)
+```
+
+```{r read-lists}
+# Paths to gene lists (adjust if needed)
+male_file <- "output/peak_gene_overlaps/Male_nearest_unique_genes.csv"
+female_file <- "output/peak_gene_overlaps/Female_nearest_unique_genes.csv"
+shared_file <- "output/peak_gene_overlaps/nearest_intersection_male_female.csv"
+
+male_genes <- read_csv(male_file, show_col_types = FALSE)$gene %>% as.character() %>% unique()
+female_genes <- read_csv(female_file, show_col_types = FALSE)$gene %>% as.character() %>% unique()
+shared_genes <- read_csv(shared_file, show_col_types = FALSE)$gene %>% as.character() %>% unique()
+
+length(male_genes); length(female_genes); length(shared_genes)
+```
+
+```{r run-enrich}
+# Function to run enrichr for a gene vector and save results
+run_enrichr_save <- function(genes, label, dbs = dbs, outdir = outdir, top_n = 20) {
+  if (length(genes) < 3) {
+    message(label, ': too few genes for enrichment (', length(genes), ") - skipping")
+    return(NULL)
+  }
+  res <- enrichr(genes, dbs)
+  res_db <- res[[dbs[1]]]
+  # save full table
+  out_csv <- file.path(outdir, paste0(label, '_', dbs[1], '_enrichr_full.csv'))
+  write.csv(res_db, out_csv, row.names = FALSE)
+  message('Saved ', out_csv)
+  # simplified table for top terms
+  if (nrow(res_db) > 0) {
+    top <- res_db %>% arrange(adjustedP.value) %>% head(top_n)
+    out_top <- file.path(outdir, paste0(label, '_', dbs[1], '_top', top_n, '.csv'))
+    write.csv(top, out_top, row.names = FALSE)
+    # barplot of -log10(adjustedP.value)
+    top <- top %>% mutate(term = factor(Term, levels = rev(Term)))
+    p <- ggplot(top, aes(x = term, y = -log10(Adjusted.P.value))) +
+      geom_col(fill = 'steelblue') + coord_flip() +
+      labs(x = '', y = expression(-log[10](Adjusted~P.value)),
+           title = paste(label, 'top', top_n, dbs[1])) +
+      theme_minimal()
+    out_png <- file.path(outdir, paste0(label, '_', dbs[1], '_top', top_n, '.png'))
+    ggsave(out_png, p, width = 6, height = 4, dpi = 150)
+    message('Saved plot ', out_png)
+  }
+  return(res_db)
+}
+
+male_res <- run_enrichr_save(male_genes, 'Male_nearest')
+female_res <- run_enrichr_save(female_genes, 'Female_nearest')
+shared_res <- run_enrichr_save(shared_genes, 'Shared_nearest')
+```
+
+```{r summary, echo=TRUE}
+# Quick summary: list top term per set
+summ <- list(Male = if(!is.null(male_res)) head(male_res[order(male_res$Adjusted.P.value), ], 1) else NULL,
+             Female = if(!is.null(female_res)) head(female_res[order(female_res$Adjusted.P.value), ], 1) else NULL,
+             Shared = if(!is.null(shared_res)) head(shared_res[order(shared_res$Adjusted.P.value), ], 1) else NULL)
+
+summ
+```

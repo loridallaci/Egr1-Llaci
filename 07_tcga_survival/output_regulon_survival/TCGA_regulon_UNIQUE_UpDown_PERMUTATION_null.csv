@@ -1,0 +1,5 @@
+"Geneset","Dataset","Real_HR","Real_Cox_P","Null_median_HR","Empirical_P_onesided","Empirical_P_twosided","N_perm"
+"MaleUnique_Up","Males",0.45,0.244,0.228,0.8392,0.8482,1000
+"MaleUnique_Down","Males",2.566,0.00512,0.509,0.007,0.2997,1000
+"FemaleUnique_Up","Females",3.639,0.0581,0.733,0.0639,0.2228,1000
+"FemaleUnique_Down","Females",1.858,0.304,0.855,0.1688,0.4845,1000

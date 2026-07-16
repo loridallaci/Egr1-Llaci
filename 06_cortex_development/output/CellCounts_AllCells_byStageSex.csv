@@ -1,7 +1,11 @@
 "stage","sex","Freq"
-"LateFetal","female",2861
-"LateFetal","male",4682
+"LateFetal","female",4682
+"LateFetal","male",2861
 "Infant","female",2732
 "Infant","male",3722
-"Child","female",5561
-"Child","male",3755
+"Child","female",3755
+"Child","male",5561
+"Adol","female",4939
+"Adol","male",5221
+"Adult","female",2064
+"Adult","male",7450

@@ -1,0 +1,4 @@
+experiment_file,background_file,experiment_name,background_name
+whole_brain_acsa2_bound.qbed,whole_brain_not_acsa2_bound.qbed,acsa2_bound,not_acsa2bound
+whole_brain_acsa2_FT.qbed,whole_brain_not_acsa2_FT.qbed,acsa2_FT,not_acsa2FT
+whole_brain_myelin_bound.qbed,whole_brain_not_myelin.qbed,myelin_bound,not_myelinbound

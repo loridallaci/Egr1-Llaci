@@ -18,11 +18,13 @@ Large raw inputs (qbeds, bigWigs) live on HTCF/LTS and are listed under
 
 ## Peak calling — parameters
 `cc.pp.call_peaks(method="MACCs", reference="mm10", window_size=300,
-step_size=150, pvalue_cutoffTTAA=0.001, lam_win_size=1e6, pseudocounts=0.1)`,
-run per sex (Egr1 vs matched WT), chrY-filtered inputs.
+step_size=150, pvalue_cutoffbg=0.05, pvalue_cutoffTTAA=0.001, lam_win_size=1e6,
+pseudocounts=0.1)`, run per sex (Egr1 vs matched WT), chrY-filtered inputs.
 
-> **Note (report in Methods):** the background p-value cutoff differs by sex —
-> male `pvalue_cutoffbg = 0.005`, female `pvalue_cutoffbg = 0.05`. Document/justify.
+The **same** parameters were used for both sexes (`pvalue_cutoffbg = 0.05`,
+`pvalue_cutoffTTAA = 0.001`); verified by reproducing the used peak beds
+(male 11,977 / female 11,772 peaks) byte-for-byte from these settings. There is
+no sex-specific background-cutoff asymmetry.
 
 ## Peak sets — which is which
 - **Panel a heatmap and panels d/e use the SEPARATELY-CALLED unique/shared

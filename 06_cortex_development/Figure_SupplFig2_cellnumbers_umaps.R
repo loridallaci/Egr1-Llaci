@@ -16,7 +16,10 @@
 ##   SupplFig2_cortex_UMAPs.pdf
 ## =====================================================================
 suppressMessages({ library(Seurat); library(Signac); library(ggplot2); library(patchwork) })
-options(future.globals.maxSize = 12 * 1024^3)   # rLSI anchor step ships the object list to a worker
+options(future.globals.maxSize = 400 * 1024^3)  # rLSI anchor step ships the object list to a worker;
+                                                # the withMotifs_V4 objects (JASPAR motif matrix in the
+                                                # peaks assay) exceed 12 GiB, so this must be generous.
+                                                # Run on a high-memory host (e.g. .181, 503 GiB).
 
 stage_levels <- c("LateFetal","Infant","Child","Adol","Adult")
 sex_cols <- c(female = "#F39AC9", male = "#4A6FE3")
@@ -56,7 +59,12 @@ for (st in names(stage_files)) {
   ## error). TFIDF/SVD/UMAP use the peak counts matrix, so fragments aren't needed.
   for (a in intersect(c("peaks","ATAC"), Assays(o)))
     suppressWarnings(try(Fragments(o[[a]]) <- NULL, silent = TRUE))
-  o$sex <- ifelse(grepl("-1$", colnames(o)), "female", ifelse(grepl("-2$", colnames(o)), "male", NA))
+  ## Sex: use the per-stage assignment STORED in the object by cortex_dev_add_motifs.R.
+  ## Do NOT re-derive from the barcode suffix — the suffix->sex map FLIPS per stage
+  ## (LaFet/Child/Adol have -1=male, -2=female; Inf/Adult/EaFet have -1=female), so a
+  ## uniform -1=female map silently swaps male/female for LaFet, Child and Adol.
+  if (!"sex" %in% colnames(o[[]])) stop("stored $sex missing for stage ", st)
+  o$sex <- as.character(o$sex)
   o <- o[, o$sex %in% c("female","male")]
   o$sex <- factor(o$sex, levels = c("female","male"))
   counts[[st]] <- as.data.frame(table(sex = o$sex)); counts[[st]]$stage <- st
@@ -73,7 +81,7 @@ for (st in names(stage_files)) {
   o[["RNA"]] <- JoinLayers(o[["RNA"]])
   e <- Embeddings(o, "umap.rna")
   rna_df <- data.frame(x = e[,1], y = e[,2],
-                       sex = factor(ifelse(grepl("-1$", rownames(e)), "female", "male"), levels = c("female","male")))
+                       sex = factor(o$sex[rownames(e)], levels = c("female","male")))
 
   ## ---- ATAC UMAP: rLSI-integrated across sex (matches Supp Fig 1c) ---
   DefaultAssay(o) <- "peaks"
@@ -86,7 +94,7 @@ for (st in names(stage_files)) {
   integ <- RunUMAP(integ, reduction = "integrated_lsi", dims = 2:30, reduction.name = "umap.atac", verbose = FALSE)
   ea <- Embeddings(integ, "umap.atac")
   atac_df <- data.frame(x = ea[,1], y = ea[,2],
-                        sex = factor(ifelse(grepl("-1$", rownames(ea)), "female", "male"), levels = c("female","male")))
+                        sex = factor(o$sex[rownames(ea)], levels = c("female","male")))
 
   mk <- function(df, ttl) ggplot(df[sample(nrow(df)), ], aes(x, y, colour = sex)) +
       geom_point(size = 0.3, alpha = 0.7) +

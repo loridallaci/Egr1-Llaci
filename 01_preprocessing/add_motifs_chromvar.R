@@ -23,7 +23,7 @@
 
 library(Seurat)
 library(Signac)
-library(JASPAR2022)
+library(JASPAR2020)
 library(TFBSTools)
 library(BSgenome.Mmusculus.UCSC.mm10)
 library(chromVAR)

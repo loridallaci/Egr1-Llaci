@@ -107,7 +107,7 @@ p <- ggplot(da_peaks, aes(
     size  = 1.8,
     shape = 16
   ) +
-  geom_vline(xintercept = c(-0.05, 0.05), linetype = "dashed",
+  geom_vline(xintercept = c(-0.5, 0.5), linetype = "dashed",
              color = "grey40", linewidth = 0.4) +
   geom_hline(yintercept = -log10(0.05), linetype = "dashed",
              color = "grey40", linewidth = 0.4) +

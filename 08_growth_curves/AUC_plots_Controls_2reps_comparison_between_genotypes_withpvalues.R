@@ -52,7 +52,7 @@ run_panel <- function(conds, plot_title, file_name, w, ref = "EgrWT") {
     mutate(target = trimws(sub("-.*","",comparison)),
            RoR = 2^estimate, RoR_lo = 2^lower.CL, RoR_hi = 2^upper.CL,
            p_adj = p.adjust(p.value, "fdr"),
-           plabel = pfmt(p.value))          # <-- actual p-value text (raw, two-sided)
+           plabel = pfmt(p_adj))            # <-- actual p-value text (FDR/BH-adjusted, two-sided)
   print(it[, c("comparison","RoR","p.value","p_adj")], digits = 3)
   
   comps <- it |> filter(target %in% conds)

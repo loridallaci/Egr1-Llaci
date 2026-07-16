@@ -1,8 +1,9 @@
 # Supplementary Fig. 1 — "Egr1 activity is enriched in male GBM cells"
 
 Panel-by-panel map of scripts, inputs, and status. Panels **a–e** use the lot6 mouse
-multiome (081721); panels **f–h** use the cortex-development dataset. All multiome panels
-need Signac/Seurat + the HTCF data, so they run **on the HTCF cluster**, not locally.
+multiome (081721); panels **f–g** cover the small female EGR1-motif-high subcluster (c4)
+and its reactivation of the female EGR1 regulon. The cortex-development dataset moved to
+its own **Supplementary Fig. 2** (see `Suppl_Fig2_panel_map.md`).
 
 Raw multiome data (HTCF, aggregated lot6/081721):
 `/lts/rmlab/rmlab_shared3/l.llaci/output/seurat_results/multiome_081721_analysis/multiome_081721_aggregated/outs/`
@@ -15,10 +16,13 @@ Raw multiome data (HTCF, aggregated lot6/081721):
 | **c** | ATAC-seq UMAP (rLSI-integrated across sex) | `03_atac_analysis/Figures_SupplFig1c_ATAC_UMAP_rLSI.R` | ✅ written; needs HTCF data |
 | **d** | Promoter / gene-body / intergenic distribution of peaks | `03_atac_analysis/Suppl_Fig1d_peak_annotation.R` | ✅ written (ChIPseeker on MACS2 `peaks`); needs HTCF data |
 | **e** | Male / Female feature UMAPs (e.g. Egr1) | `02_rna_analysis/multiome_rna/Figures_SupplFig1b_RPCA_UMAP.R` (Egr1 FeaturePlot on the RPCA UMAP) | ✅ written; needs HTCF data |
-| **f** | QC for cortex development | `Roussos_cortex_development_RENIN.Rmd` | ⬜ to extract |
-| **g** | Cell numbers by age × sex (bar) | cortex-dev cell-number CSVs (Adol/Adult/Child/Infant/LateFetal × M/F) | ⬜ to extract (per-stage `CellCounts_*` CSVs live on HTCF) |
-| **h** | Cortex development RNA + ATAC UMAPs | `Roussos_cortex_development_RENIN.Rmd` | ⬜ to extract |
-| **(RENIN motif montage)** | TF motif enrichment, M vs F × 5 stages (2×5 volcano grid) | `06_cortex_development/Figure_SupplFig1_RENIN_motif_montage.R` (pipeline: `06_cortex_development/cortex_dev_RENIN_pipeline.R`) | ✅ extracted; CSVs committed, figure rebuilds locally |
+| **f** | EGR1 motif activity across female clusters — identifies the small EGR1-high subcluster (c4, n=249) vs the big EGR1-low clusters (c0/c1) | `05_integration/Figure_SupplFig1fg_c4_regulon.R` | ✅ built; runs locally from the stored object |
+| **g** | Female EGR1 regulon module scores — activated targets ↑ / repressed targets ↓ in c4 vs c0/c1 (cross-validation of motif activity → regulon) | `05_integration/Figure_SupplFig1fg_c4_regulon.R` | ✅ built; runs locally from the stored object |
+
+Supporting (text / supplementary table, not figure panels): DE overlap odds ratios
+(up-in-c4 → activated OR≈10; down-in-c4 → repressed OR≈15) and the GO_Molecular_Function
+Enrichr on c4 up-genes (mesenchymal / ECM — metallopeptidase, PDGF, Wnt), in
+`05_integration/output/` and `05_integration/output/enrichment/`.
 
 ## Notes
 - **Panel c is committed to the rLSI-integrated ATAC UMAP** (`Figures_SupplFig1c_ATAC_UMAP_rLSI.R` →

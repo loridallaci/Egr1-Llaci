@@ -1,39 +1,25 @@
-## One PDF per regulon direction (top GO-BP-2023 terms), full wrapped names.
-suppressMessages({library(ggplot2); library(dplyr); library(stringr)})
-IN   <- "C:/Users/loril/Documents/GitHub/Egr1-Llaci/07_tcga_survival/output_regulon_survival/enrichr_regulon_directions"
-NTOP <- 10
+## Per-regulon-direction EnrichR figures in the SAME style as the rest of the paper
+## (enrichR::plotEnrich, y="Count", coloured by P.value with side colourbar).
+suppressMessages({library(enrichR); library(ggplot2)})
+options(timeout = 120); setEnrichrSite("Enrichr")
+DB  <- "GO_Biological_Process_2023"
+IN  <- "C:/Users/loril/Documents/GitHub/Egr1-Llaci/07_tcga_survival/output_regulon_survival"
+OUT <- file.path(IN, "enrichr_regulon_directions")
 
-sets <- list(
-  MaleUnique_Down   = list(title="Male regulon (Down after KD)",   col="#1E6FBF"),
-  MaleUnique_Up     = list(title="Male regulon (Up after KD)",     col="#8FC1EC"),
-  FemaleUnique_Down = list(title="Female regulon (Down after KD)", col="#C2185B"),
-  FemaleUnique_Up   = list(title="Female regulon (Up after KD)",   col="#F48FB1"))
+titles <- c(MaleUnique_Down="Male regulon (Down after KD)",
+            MaleUnique_Up  ="Male regulon (Up after KD)",
+            FemaleUnique_Down="Female regulon (Down after KD)",
+            FemaleUnique_Up  ="Female regulon (Up after KD)")
 
-for (s in names(sets)) {
-  d <- read.csv(file.path(IN, paste0("enrichr_GO_BP2023_", s, ".csv")))
-  d <- d[order(d$Adjusted.P.value), ][seq_len(min(NTOP, nrow(d))), ]
-  d$Term <- sub("\\s*\\(GO:\\d+\\)$", "", d$Term)           # drop GO id
-  d$Term <- str_wrap(d$Term, width = 40)                    # wrap long names
-  d$neglog10 <- -log10(d$Adjusted.P.value)
-  d$row <- seq_len(nrow(d))
-  d$uid <- factor(sprintf("%02d", d$row), levels = sprintf("%02d", rev(d$row)))
-  labmap <- setNames(d$Term, as.character(d$uid))
-
-  p <- ggplot(d, aes(neglog10, uid)) +
-    geom_col(fill = sets[[s]]$col, width = 0.72) +
-    geom_vline(xintercept = -log10(0.05), linetype = "dashed", linewidth = 0.6, color = "grey40") +
-    scale_y_discrete(labels = labmap) +
-    labs(x = expression(-log[10]~"(adjusted "*italic(P)*"-value)"), y = NULL,
-         title = sets[[s]]$title, subtitle = "GO Biological Process 2023") +
-    theme_bw(base_size = 15) +
-    theme(axis.text.y  = element_text(size = 14, color = "black"),
-          axis.text.x  = element_text(size = 14, color = "black"),
-          axis.title.x = element_text(size = 16),
-          plot.title   = element_text(size = 18, face = "bold"),
-          plot.subtitle= element_text(size = 14, color = "grey35"),
-          panel.grid.minor = element_blank())
-
-  outf <- file.path(IN, paste0("enrichr_GO_BP2023_", s, ".pdf"))
-  ggsave(outf, p, width = 10, height = 6, device = "pdf")
+for (s in names(titles)) {
+  genes <- toupper(readLines(file.path(IN, paste0("regulon_genes_", s, "_052726.txt"))))
+  genes <- genes[nzchar(genes)]
+  result <- enrichr(genes, DB)[[1]]
+  p <- plotEnrich(result, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value") +
+    ggtitle(paste0(titles[[s]], "\n", DB)) +
+    theme(plot.title = element_text(hjust = 0.5, size = 10))
+  outf <- file.path(OUT, paste0("enrichr_GO_BP2023_", s, ".pdf"))
+  pdf(file = outf, width = 7, height = 7, onefile = TRUE, useDingbats = FALSE)
+  print(p); invisible(dev.off())
   cat("wrote:", basename(outf), "\n")
 }

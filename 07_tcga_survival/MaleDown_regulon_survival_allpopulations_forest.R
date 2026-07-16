@@ -6,7 +6,7 @@ s  <- suppressWarnings(read_csv(file.path(R,"07_tcga_survival/output_regulon_sur
 d  <- as.data.frame(s[s$Geneset=="MaleUnique_Down", c("Dataset","N_genes","HR","Lower95","Upper95","Pvalue")])
 
 nm <- c(All="All patients", Males="Male patients", Females="Female patients")
-d$Dataset <- factor(nm[d$Dataset], levels = c("Female patients","Male patients","All patients"))
+d$Dataset <- factor(nm[d$Dataset], levels = c("All patients","Female patients","Male patients"))
 d$HR <- as.numeric(d$HR); d$Lower95 <- as.numeric(d$Lower95); d$Upper95 <- as.numeric(d$Upper95)
 fmtp <- function(p) ifelse(p<1e-3, sprintf("%.1e", p), sprintf("%.3f", p))
 d$lab <- sprintf("HR = %.2f (%.2f–%.2f),  p = %s", d$HR, d$Lower95, d$Upper95, fmtp(d$Pvalue))

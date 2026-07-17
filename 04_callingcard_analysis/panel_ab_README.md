@@ -9,12 +9,30 @@ Large raw inputs (qbeds, bigWigs) live on HTCF/LTS and are listed under
 
 | Step | Script / notebook | Output |
 |------|-------------------|--------|
-| 1. Call peaks per sex | `calling_card_peak_pipeline.py` (`pipeline` branch); pycallingcards `cc.pp.call_peaks` (MACCs) | `Egr1CC_peak_{Male,Female}Egr1_VS_{Male,Female}WT_MACC2_*.bed` |
-| 2. Filter to 20 kb of a gene, classify shared/unique | `1_CCpeaks_to_20kb_overlap.R` (+ peak-comparison notebooks, `pipeline` branch) | `{Male,Female}_Egr1CC_peaks_20kbThreshhold_*.txt`; `{male,female}_unique_peaks_originalPeaks.bed`, `shared_peaks_originalPeaks.bed` |
+| 1. Call peaks per sex | `calling_card_peak_pipeline.py` (`pipeline` branch); pycallingcards `cc.pp.call_peaks` (MACCs) | `Egr1CC_peak_{Male,Female}Egr1_VS_{Male,Female}WT_MACC2_*.bed` (male 11,977 / female 11,772) |
+| 2a. Filter to 20 kb of a gene (**regulon step ONLY**) | `1_CCpeaks_to_20kb_overlap.R` | `{Male,Female}_Egr1CC_peaks_20kbThreshhold_*.txt` (9,456 / 9,603) |
+| 2b. Classify shared/unique (**from the FULL calls, not the 20 kb subset**) | **`CC_peak_overlap_venn.py`** (or `.R`) | `output/peak_overlap/CC_{male_only,shared,female_only}_regions.bed` (8,204 / 3,613 / 7,986) + `*_peakCentric.bed` + Supp Fig 4a Venn |
 | 3. CPM bigWigs | **`panel_a_1_make_cpm_bigwigs.sh`** | `cpm_bigwigs/{Male,Female}_Egr1_CPM.bw` |
-| 4. **Panel a** heatmap | **`panel_a_2_plot_heatmap.sh`** (deepTools) | `Figure3a_Egr1CC_separateCall_CPM.pdf` |
+| 4. **Panel a** heatmap — one panel per sex, over **all** that sex's peaks | **`panel_a_2_plot_heatmap.sh`** (deepTools) | `output/figures/fig3a_heatmap/Egr1CC_originalPeaks_CPM_matrix_{male,female}Only_Fig3.pdf` |
 | 5. **Panel b** browser tracks | `Final5_…for_paper_April2026.ipynb` (`pipeline` branch) | `{Male,Female}_Egr1_WT_tracks_050726_*_{Ptk2b,Frzb,Nab1}.pdf` |
 | 6. **Panels d/e** CC ∩ DE regulon | `2_CCxDE_to_regulonSummary.R`, `3_CCxDE_full_summary_with_multivariate.R` | `overlap_{Male,Female}CC_20kb_NearestGene_vs_Egr1g3vsNeg1_*.csv` |
+
+### Panel a — what it is, and two traps (corrected 2026-07-17)
+Panel a is **two heatmaps side by side (Male | Female)**, each over that sex's **full**
+peak set (11,977 / 11,772), centered ±1 kb. It is **not** grouped into
+shared / male-unique / female-unique, and it is **not** 20 kb-filtered — verified on
+LTS (`wc -l centered_peaks_{males,females}.bed` → 11977 / 11772).
+
+- **Trap 1:** the output filenames say `originalPeaks`. That is copy-paste residue from
+  earlier attempts in the working-notes file — it does **not** describe the input.
+- **Trap 2:** an earlier version of `panel_a_2_plot_heatmap.sh` plotted a three-group
+  split from the `*_originalPeaks.bed` fragment sets. That **did not reproduce panel a**.
+  It has been replaced.
+
+The `*_originalPeaks.bed` sets (7,357 / 7,495 / 3,187) are **superseded and should not be
+used**: they were built by pyranges `.subtract()`/`.intersect()` (interval arithmetic —
+trims and splits peaks into fragments) applied to the 20 kb-filtered subset. Use the
+`output/peak_overlap/` sets from step 2b instead.
 
 ## Peak calling — parameters
 `cc.pp.call_peaks(method="MACCs", reference="mm10", window_size=300,

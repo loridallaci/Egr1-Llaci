@@ -20,9 +20,10 @@
 #   - genome index: /ref/rmlab/data/bowtie2/mm10/mm10  (verified present)
 # =============================================================================
 
-set -euo pipefail
-source "$HOME/miniconda3/etc/profile.d/conda.sh"
+set -eo pipefail                  # NOTE: no '-u' -- conda activation scripts (binutils) are not
+source "$HOME/miniconda3/etc/profile.d/conda.sh"   # set -u clean and crash on ADDR2LINE unbound var
 conda activate cc_external        # create once (see header): sra-tools bowtie2 samtools macs2 bedtools deeptools
+set -u                            # safe to enable strict-unset now that activation is done
 THREADS=${SLURM_CPUS_PER_TASK:-16}
 # One-time env setup (run on the login node before sbatch):
 #   conda create -n cc_external -c bioconda -c conda-forge sra-tools bowtie2 samtools macs2 bedtools deeptools -y

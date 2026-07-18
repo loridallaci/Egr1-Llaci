@@ -36,17 +36,23 @@ mkdir -p "$OUT"
 MALE_RAW=Egr1CC_peak_MaleEgr1_VS_MaleWT_MACC2_window1000_YchromFiltered_window300_p05.bed      # 11,977
 FEMALE_RAW=Egr1CC_peak_FemaleEgr1_VS_FemaleWT_MACC2_window1000_YchromFiltered_window300_p05.bed # 11,772
 
-# ---- make clean HOMER peak files: chr / start / end / uniqueID --------------
-# The MACCs .bed has extra numeric columns (Center, insertion stats). HOMER would
-# misread col5/col6 as score/strand, so reduce to a proper 4-column peak file.
-awk 'BEGIN{OFS="\t"} {print $1, $2, $3, "male_"NR}'   "$MALE_RAW"   > male_all_forHomer.bed
-awk 'BEGIN{OFS="\t"} {print $1, $2, $3, "female_"NR}' "$FEMALE_RAW" > female_all_forHomer.bed
-echo "male peaks:   $(wc -l < male_all_forHomer.bed)   (expect 11977)"
-echo "female peaks: $(wc -l < female_all_forHomer.bed) (expect 11772)"
+# ---- make HOMER-NATIVE peak files: id / chr / start / end / strand ----------
+# MUST be 5 columns in HOMER-native order (id FIRST, explicit strand). A 3- or
+# 4-column BED FAILS: HOMER's peakfile parser needs >=5 columns and its BED
+# auto-detect does not fire on a 4-col file -> it silently drops ALL peaks and
+# reports "0 total sequences read" (verified 2026-07-17). Do NOT use a .bed here.
+awk 'BEGIN{OFS="\t"} {print "m"NR, $1, $2, $3, "+"}' "$MALE_RAW"   > male_homer.txt
+awk 'BEGIN{OFS="\t"} {print "f"NR, $1, $2, $3, "+"}' "$FEMALE_RAW" > female_homer.txt
+echo "male peaks:   $(wc -l < male_homer.txt)   (expect 11977)"
+echo "female peaks: $(wc -l < female_homer.txt) (expect 11772)"
 
-# ---- HOMER: known + de novo, -size 1000 (matches the window-1000 CC runs) ----
-findMotifsGenome.pl male_all_forHomer.bed   "$GENOME" "$OUT/SuppFig4a_Male_allPeaks_Egr1"   -size 1000 -p 12
-findMotifsGenome.pl female_all_forHomer.bed "$GENOME" "$OUT/SuppFig4a_Female_allPeaks_Egr1" -size 1000 -p 12
+# ---- HOMER known-motif enrichment (-size 1000; matches the window-1000 CC runs)
+# We only need KNOWN-motif enrichment (Egr1 rank, from knownResults.txt). The de
+# novo step ("De novo motif finding") may error with "Filtered out all motifs" in
+# this HOMER install -- that does NOT affect knownResults, which is what we report.
+# -preparsedDir is not needed: mm10.1000.* background already exists and is readable.
+findMotifsGenome.pl male_homer.txt   "$GENOME" "$OUT/SuppFig4a_Male_allPeaks_Egr1"   -size 1000 -p 12
+findMotifsGenome.pl female_homer.txt "$GENOME" "$OUT/SuppFig4a_Female_allPeaks_Egr1" -size 1000 -p 12
 
 echo
 echo "=== Egr1 rank in each (from knownResults.txt) ==="

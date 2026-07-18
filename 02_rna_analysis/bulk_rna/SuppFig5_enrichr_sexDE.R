@@ -16,8 +16,7 @@ de_dir  <- "C:/Users/loril/Documents/GitHub/Egr1-Llaci/02_rna_analysis/bulk_rna/
 out_dir <- file.path(de_dir, "enrichr")
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
-dbs     <- c("GO_Molecular_Function_2023","GO_Cellular_Component_2023",
-             "GO_Biological_Process_2023","WikiPathways_2019_Mouse")
+dbs     <- c("GO_Biological_Process_2023")   # only the db used for the manuscript figures
 plot_db <- "GO_Biological_Process_2023"
 
 ## DE table -> direction-split gene lists (raw p<=0.05 & |lfc|>=0.5); +lfc = higher in Male

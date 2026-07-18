@@ -41,8 +41,7 @@ mcols(dds) <- DataFrame(mcols(dds), geneData[rownames(dds), ])
 dds <- dds[rowSums(counts(dds)) > 1, ]
 dds <- DESeq(dds)
 
-## ---- volcano (styling from Egr1KD_volcano.R) -----------------------------
-LOG2FC_CAP <- 4
+## ---- volcano (styling from Egr1KD_volcano.R; NO log2FC cap) ---------------
 label_genes <- c("Egr1","Xist","Ddx3y","Uty","Eif2s3y","Kdm5d")   # Egr1 + canonical sex markers
 
 make_de_volcano <- function(a, b, tag, title, out_txt, out_pdf) {
@@ -52,7 +51,6 @@ make_de_volcano <- function(a, b, tag, title, out_txt, out_pdf) {
 
   de <- as.data.frame(res); de <- de[!is.na(de$pvalue), ]
   de$pvalue[de$pvalue == 0] <- 1e-300
-  de$lfc_plot <- pmax(pmin(de$log2FoldChange, LOG2FC_CAP), -LOG2FC_CAP)
   up   <- "Higher in Male";   dn <- "Higher in Female"
   de$cls <- "NO"
   de$cls[de$log2FoldChange >=  0.5 & de$pvalue <= 0.05] <- up
@@ -60,15 +58,16 @@ make_de_volcano <- function(a, b, tag, title, out_txt, out_pdf) {
   n_up <- sum(de$cls==up); n_dn <- sum(de$cls==dn)
   de$lab <- ifelse(de$SYMBOL %in% label_genes, de$SYMBOL, NA)
   cols <- setNames(c("#1E90FF","#FF69B4","grey60"), c(up,dn,"NO"))
+  xlim <- max(abs(de$log2FoldChange), na.rm=TRUE)                 # symmetric, real range
 
-  p <- ggplot(de, aes(lfc_plot, -log10(pvalue), col=cls, label=lab)) +
+  p <- ggplot(de, aes(log2FoldChange, -log10(pvalue), col=cls, label=lab)) +
     geom_point(alpha=0.8, shape=16) +
     geom_text_repel(box.padding=2.5, max.overlaps=Inf, size=4, fontface="italic", show.legend=FALSE) +
     scale_color_manual(values=cols, name="Expression Change") +
-    scale_x_continuous(limits=c(-LOG2FC_CAP,LOG2FC_CAP), breaks=seq(-LOG2FC_CAP,LOG2FC_CAP,1)) +
+    scale_x_continuous(limits=c(-xlim, xlim)) +
     theme_minimal(base_size=14) +
     labs(title=title,
-         subtitle=sprintf("%s: %d  |  %s: %d  |  log2FC capped at ±%d", dn, n_dn, up, n_up, LOG2FC_CAP),
+         subtitle=sprintf("%s: %d  |  %s: %d", dn, n_dn, up, n_up),
          x="Log2 Fold Change (Male / Female)", y="-Log10 P-value") +
     theme(plot.title=element_text(hjust=0.5, size=16, face="bold"),
           plot.subtitle=element_text(hjust=0.5, size=11, colour="grey40"),

@@ -52,19 +52,19 @@ make_de_volcano <- function(a, b, tag, title, out_txt, out_pdf) {
   de <- as.data.frame(res); de <- de[!is.na(de$pvalue), ]
   de$pvalue[de$pvalue == 0] <- 1e-300
   up   <- "Higher in Male";   dn <- "Higher in Female"
-  de$cls <- "NO"
+  de$cls <- "NS"
   de$cls[de$log2FoldChange >=  0.5 & de$pvalue <= 0.05] <- up
   de$cls[de$log2FoldChange <= -0.5 & de$pvalue <= 0.05] <- dn
   n_up <- sum(de$cls==up); n_dn <- sum(de$cls==dn)
   de$lab <- ifelse(de$SYMBOL %in% label_genes, de$SYMBOL, NA)
-  cols <- setNames(c("#1E90FF","#FF69B4","grey60"), c(up,dn,"NO"))
-  xlim <- max(abs(de$log2FoldChange), na.rm=TRUE)                 # symmetric, real range
+  cols <- setNames(c("#1E90FF","#FF69B4","grey60"), c(up,dn,"NS"))
+  xlim <- ceiling(max(abs(de$log2FoldChange), na.rm=TRUE)/5)*5    # round up to nearest 5 (symmetric)
 
   p <- ggplot(de, aes(log2FoldChange, -log10(pvalue), col=cls, label=lab)) +
     geom_point(alpha=0.8, shape=16) +
     geom_text_repel(box.padding=2.5, max.overlaps=Inf, size=4, fontface="italic", show.legend=FALSE) +
     scale_color_manual(values=cols, name="Expression Change") +
-    scale_x_continuous(limits=c(-xlim, xlim)) +
+    scale_x_continuous(limits=c(-xlim, xlim), breaks=seq(-xlim, xlim, 5)) +
     theme_minimal(base_size=14) +
     labs(title=title,
          subtitle=sprintf("%s: %d  |  %s: %d", dn, n_dn, up, n_up),

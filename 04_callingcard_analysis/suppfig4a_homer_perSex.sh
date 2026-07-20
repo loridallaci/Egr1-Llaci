@@ -29,7 +29,7 @@ export PATH=/ref/rmlab/software/lori/homer/bin:$PATH
 GENOME=/ref/rmlab/software/lori/homer/data/genomes/mm10   # or just "mm10" if preinstalled
 
 DIR=/lts/rmlab/rmlab_shared3/l.llaci/Egr1_paper/testing_CC_forPaper
-OUT=/scratch/rmlab/rmlab_shared3/l.llaci/Egr1_paper/Homer
+OUT=/scratch/rmlab/rmlab_shared3/l.llaci/Egr1_paper/homer_work   # final v5 run
 cd "$DIR"
 mkdir -p "$OUT"
 
@@ -51,13 +51,13 @@ echo "female peaks: $(wc -l < female_homer.txt) (expect 11772)"
 # novo step ("De novo motif finding") may error with "Filtered out all motifs" in
 # this HOMER install -- that does NOT affect knownResults, which is what we report.
 # -preparsedDir is not needed: mm10.1000.* background already exists and is readable.
-findMotifsGenome.pl male_homer.txt   "$GENOME" "$OUT/SuppFig4a_Male_allPeaks_Egr1"   -size 1000 -p 12
-findMotifsGenome.pl female_homer.txt "$GENOME" "$OUT/SuppFig4a_Female_allPeaks_Egr1" -size 1000 -p 12
+findMotifsGenome.pl male_homer.txt   "$GENOME" "$OUT/SuppFig4a_Male_v5"   -size 1000 -p 12
+findMotifsGenome.pl female_homer.txt "$GENOME" "$OUT/SuppFig4a_Female_v5" -size 1000 -p 12
 
 echo
 echo "=== Egr1 rank in each (from knownResults.txt) ==="
 for s in Male Female; do
-    f="$OUT/SuppFig4a_${s}_allPeaks_Egr1/knownResults.txt"
+    f="$OUT/SuppFig4a_${s}_v5/knownResults.txt"
     n=$(head -1 "$f" | grep -oE "of [0-9]+" | head -1 | grep -oE "[0-9]+")
     echo "--- $s (N=$n)"
     awk -F'\t' 'NR>1 && $1 ~ /^Egr/ {print "   #"NR-1"  "$1"  p="$3"  tgt="$7}' "$f" | head -3
@@ -65,5 +65,9 @@ done
 
 echo
 echo "Done. Supp Fig 4a inputs:"
-echo "  $OUT/SuppFig4a_Male_allPeaks_Egr1/knownResults.{txt,html}"
-echo "  $OUT/SuppFig4a_Female_allPeaks_Egr1/knownResults.{txt,html}"
+echo "  $OUT/SuppFig4a_Male_v5/knownResults.{txt,html}"
+echo "  $OUT/SuppFig4a_Female_v5/knownResults.{txt,html}"
+# Final v5 results (verified 2026-07-20): Egr1(Zf) motif enriched at rank 11 in
+# both sexes -- male N=11,978 peaks, P=1e-291, 41.64% of peaks; female N=11,772,
+# P=1e-300, 43.78%. Top motifs are AP-1/bZIP (Fos/Fra1/Fra2/Fosl2) in both.
+# knownResults copied to the repo output for the panel (see output/ below).

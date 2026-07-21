@@ -21,8 +21,8 @@ options(future.globals.maxSize = 400 * 1024^3)  # rLSI anchor step ships the obj
                                                 # peaks assay) exceed 12 GiB, so this must be generous.
                                                 # Run on a high-memory host (e.g. .181, 503 GiB).
 
-stage_levels <- c("LateFetal","Infant","Child","Adol","Adult")
-sex_cols <- c(female = "#F39AC9", male = "#4A6FE3")
+stage_levels <- c("LateFetal","Infant","Child","Adol","Adult")   # EaFet dropped: both donors female (XIST+/Y-), no M-vs-F contrast
+sex_cols <- c(male = "#4A6FE3", female = "#F39AC9")   # male plotted first
 out <- Sys.getenv("OUT_DIR", unset = "C:/Users/loril/Documents/GitHub/Egr1-Llaci/06_cortex_development/output")
 dir.create(out, showWarnings = FALSE, recursive = TRUE)
 
@@ -66,7 +66,7 @@ for (st in names(stage_files)) {
   if (!"sex" %in% colnames(o[[]])) stop("stored $sex missing for stage ", st)
   o$sex <- as.character(o$sex)
   o <- o[, o$sex %in% c("female","male")]
-  o$sex <- factor(o$sex, levels = c("female","male"))
+  o$sex <- factor(o$sex, levels = c("male","female"))
   counts[[st]] <- as.data.frame(table(sex = o$sex)); counts[[st]]$stage <- st
 
   ## ---- RNA UMAP: RPCA-integrated across sex (matches Supp Fig 1b) ----
@@ -81,7 +81,7 @@ for (st in names(stage_files)) {
   o[["RNA"]] <- JoinLayers(o[["RNA"]])
   e <- Embeddings(o, "umap.rna")
   rna_df <- data.frame(x = e[,1], y = e[,2],
-                       sex = factor(o$sex[rownames(e)], levels = c("female","male")))
+                       sex = factor(o$sex[rownames(e)], levels = c("male","female")))
 
   ## ---- ATAC UMAP: rLSI-integrated across sex (matches Supp Fig 1c) ---
   DefaultAssay(o) <- "peaks"
@@ -94,7 +94,7 @@ for (st in names(stage_files)) {
   integ <- RunUMAP(integ, reduction = "integrated_lsi", dims = 2:30, reduction.name = "umap.atac", verbose = FALSE)
   ea <- Embeddings(integ, "umap.atac")
   atac_df <- data.frame(x = ea[,1], y = ea[,2],
-                        sex = factor(o$sex[rownames(ea)], levels = c("female","male")))
+                        sex = factor(o$sex[rownames(ea)], levels = c("male","female")))
 
   mk <- function(df, ttl) ggplot(df[sample(nrow(df)), ], aes(x, y, colour = sex)) +
       geom_point(size = 0.3, alpha = 0.7) +

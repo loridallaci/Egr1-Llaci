@@ -1,0 +1,53 @@
+"Drug","Class","Compartment","Direction","Q2_WT","q_WT","Q2_KD","q_KD"
+"Thioguanine (run 2)","Antimetabolite","WT-only (lost after KD)","Male-biased",-3.21,0.00539,-2.04,0.131
+"Benzoxiquine","Antimicrobial","WT-only (lost after KD)","Male-biased",-4.42,5.21e-05,-2.14,0.106
+"Dirithromycin","Antimicrobial","WT-only (lost after KD)","Male-biased",-2.26,0.0472,-1.63,0.244
+"Oxyquinoline","Antimicrobial","WT-only (lost after KD)","Male-biased",-2.25,0.0472,-1.3,0.347
+"Atovaquone","Antiparasitic","WT-only (lost after KD)","Male-biased",-5.01,3.79e-06,-2.01,0.134
+"Pyrvinium","Antiparasitic","WT-only (lost after KD)","Male-biased",-2.64,0.0237,-1.13,0.417
+"Monensin","Antiparasitic","WT-only (lost after KD)","Male-biased",-2.2,0.0482,-1.27,0.347
+"Metitepine","CNS/neuroactive","WT-only (lost after KD)","Male-biased",-2.86,0.0145,-1.76,0.2
+"Pimozide","CNS/neuroactive","WT-only (lost after KD)","Male-biased",-2.35,0.0411,-1.81,0.198
+"Suloctidil","CNS/neuroactive","WT-only (lost after KD)","Male-biased",-2.24,0.0472,-1.31,0.347
+"Fluphenazine","CNS/neuroactive","WT-only (lost after KD)","Male-biased",-2.2,0.0482,-1.66,0.235
+"Flumethazone","Corticosteroid","WT-only (lost after KD)","Male-biased",-2.67,0.0231,-0.184,0.896
+"Dexamethasone","Corticosteroid","WT-only (lost after KD)","Male-biased",-2.44,0.0366,-0.604,0.672
+"Fluocinolone Acetonide","Corticosteroid","WT-only (lost after KD)","Male-biased",-2.37,0.0396,-0.049,0.972
+"Methylprednisolone","Corticosteroid","WT-only (lost after KD)","Male-biased",-2.34,0.0411,-0.743,0.624
+"Amsacrine","DNA-damaging","WT-only (lost after KD)","Male-biased",-2.92,0.0123,-1.54,0.27
+"Aminacrine","DNA-damaging","WT-only (lost after KD)","Male-biased",-2.43,0.0368,-1.44,0.305
+"Vinblastine","Microtubule","WT-only (lost after KD)","Male-biased",-2.4,0.0382,-1.37,0.336
+"Oxyphenbutazone","NSAID","WT-only (lost after KD)","Male-biased",-2.39,0.0385,-1.35,0.336
+"Menadione","Oxidative/thiol","WT-only (lost after KD)","Male-biased",-2.66,0.0231,-1.44,0.305
+"Phenylmercuric","Oxidative/thiol","WT-only (lost after KD)","Male-biased",-2.28,0.0466,-1.35,0.336
+"Thimerosal","Oxidative/thiol","WT-only (lost after KD)","Male-biased",-2.23,0.0472,-1.27,0.347
+"Bronopol","Oxidative/thiol","WT-only (lost after KD)","Male-biased",-2.22,0.0472,-1.29,0.347
+"Allylestrenol","Sex/steroid hormone","WT-only (lost after KD)","Male-biased",-2.67,0.0231,-0.323,0.825
+"Tamoxifen","Sex/steroid hormone","WT-only (lost after KD)","Male-biased",-2.6,0.0252,-0.163,0.902
+"Lovastatin","Statin","WT-only (lost after KD)","Male-biased",-2.76,0.0191,-1.25,0.355
+"Simvastatin","Statin","WT-only (lost after KD)","Male-biased",-2.59,0.0253,-1.06,0.441
+"Azacitidine","Antimetabolite","Shared (Egr1-independent)","Male-biased",-7.36,8.02e-12,-6.3,1.3e-08
+"Carmofur","Antimetabolite","Shared (Egr1-independent)","Male-biased",-7.12,2.97e-11,-4.99,8.61e-06
+"Floxuridine","Antimetabolite","Shared (Egr1-independent)","Male-biased",-6.71,2.8e-10,-5,8.61e-06
+"Fluorouracil (5-FU)","Antimetabolite","Shared (Egr1-independent)","Male-biased",-6.65,3.65e-10,-5.12,6.37e-06
+"Thioguanine (run 1)","Antimetabolite","Shared (Egr1-independent)","Male-biased",-5.68,1.25e-07,-4.07,0.000313
+"Mycophenolic Acid","Antimetabolite","Shared (Egr1-independent)","Male-biased",-3.62,0.00125,-2.45,0.0486
+"Oxiconazole","Antimicrobial","Shared (Egr1-independent)","Male-biased",-7.75,7.9e-13,-4.68,3.07e-05
+"Itraconazole","Antimicrobial","Shared (Egr1-independent)","Male-biased",-5.23,1.34e-06,-5.38,2.05e-06
+"Furazolidone","Antimicrobial","Shared (Egr1-independent)","Male-biased",-3.92,0.000444,-3.36,0.0039
+"Artesunate","Antiparasitic","Shared (Egr1-independent)","Male-biased",-3.64,0.00123,-2.65,0.0311
+"Ethopropazine","CNS/neuroactive","Shared (Egr1-independent)","Male-biased",-7.04,4.02e-11,-7.21,4.91e-11
+"Ketanserin","CNS/neuroactive","Shared (Egr1-independent)","Male-biased",-5.55,2.45e-07,-4.63,3.53e-05
+"Riluzole","CNS/neuroactive","Shared (Egr1-independent)","Male-biased",-4.65,1.92e-05,-4.36,0.000113
+"Oxaliplatin","DNA-damaging","Shared (Egr1-independent)","Male-biased",-6.76,2.4e-10,-4.91,1.12e-05
+"Mitomycin","DNA-damaging","Shared (Egr1-independent)","Male-biased",-4.99,3.89e-06,-3.8,0.00089
+"Docetaxel","Microtubule","Shared (Egr1-independent)","Male-biased",-2.48,0.0336,-2.52,0.043
+"Celecoxib","NSAID","Shared (Egr1-independent)","Male-biased",-4.74,1.3e-05,-3.64,0.00154
+"Cycloheximide","Protein synthesis inhibitor","Shared (Egr1-independent)","Male-biased",-3.69,0.00104,-2.46,0.0486
+"Escin","Saponin","Shared (Egr1-independent)","Male-biased",-3.09,0.00762,-3.32,0.0042
+"Bazedoxifene","Sex/steroid hormone","Shared (Egr1-independent)","Male-biased",-2.97,0.0111,-3.27,0.00488
+"Clomiphene","Sex/steroid hormone","Shared (Egr1-independent)","Male-biased",-2.26,0.0472,-4.22,0.000175
+"Atorvastatin","Statin","Shared (Egr1-independent)","Male-biased",-6.19,6.27e-09,-3.06,0.00948
+"Guanabenz","CNS/neuroactive","KD-only (gained after KD)","Female-biased",0.347,0.755,2.97,0.0121
+"Toremifene","Sex/steroid hormone","KD-only (gained after KD)","Male-biased",-2.08,0.0622,-4.33,0.000114
+"Prasterone","Sex/steroid hormone","KD-only (gained after KD)","Female-biased",2.14,0.0551,3.4,0.00357

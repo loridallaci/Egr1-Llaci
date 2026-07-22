@@ -70,67 +70,42 @@ pd <- ggplot(dd,aes(State,n,fill=Direction))+geom_col(width=.62,colour="grey25")
 ggsave(file.path(out,"Figure5_panelD_egr1dependence.pdf"),pd,width=5,height=5.2)
 ggsave(file.path(out,"Figure5_panelD_egr1dependence.png"),pd,width=5,height=5.2,dpi=200,bg="white")
 
-## ================= PANEL e : class enrichment among male-biased WT hits =================
-hit <- S$sigWT & S$Q2_WT<0
-K<-sum(hit); N<-nrow(S)
-ce <- S %>% group_by(class) %>% summarise(n=n(), hits=sum(hit[class==class[1]]), .groups="drop")
-ce <- S %>% mutate(hit=hit) %>% group_by(class) %>% summarise(n=n(), hits=sum(hit), .groups="drop") %>%
-  mutate(frac=hits/n, p=phyper(hits-1,K,N-K,n,lower.tail=FALSE)) %>%
-  filter(n>=2) %>% arrange(frac,hits)
-ce$class<-factor(ce$class,levels=ce$class)
-ce$lab<-sprintf("%d/%d%s",ce$hits,ce$n,ifelse(ce$p<0.05," *",""))
-pe <- ggplot(ce,aes(frac,class,fill=-log10(p)))+geom_col(colour="grey30",width=.72)+
-  geom_text(aes(label=lab),hjust=-0.12,size=4.6)+
-  scale_fill_gradient(low="#deebf7",high="#08519c",name=expression(-log[10]~p))+
-  scale_x_continuous(limits=c(0,1.12),breaks=c(0,.5,1),labels=c("0","50%","100%"),expand=c(0,0))+
-  labs(title="Drug classes enriched among\nmale-biased hits (WT)",
-       x="Fraction of class that is a male-biased hit",y=NULL)+th
-ggsave(file.path(out,"Figure5_panelE_classEnrichment.pdf"),pe,width=7.2,height=5.4)
-ggsave(file.path(out,"Figure5_panelE_classEnrichment.png"),pe,width=7.2,height=5.4,dpi=200,bg="white")
+## ================= PANEL e : REMOVED — class-enrichment panel no longer used =================
 
-## ================= PANEL f : statin spotlight =================
-st <- c("SIMVASTATIN","LOVASTATIN","MEVASTATIN","ATORVASTATIN CALCIUM")
-sf <- S[S$name %in% st,] %>%
-  mutate(drug=recode(name,"ATORVASTATIN CALCIUM"="Atorvastatin","SIMVASTATIN"="Simvastatin",
-                     "LOVASTATIN"="Lovastatin","MEVASTATIN"="Mevastatin")) %>%
-  arrange(Q2_WT)
-sf$drug<-factor(sf$drug,levels=sf$drug)
-pf <- ggplot(sf)+
-  geom_vline(xintercept=0,colour="grey60")+
-  geom_segment(aes(x=Q2_WT,xend=Q2_KD,y=drug,yend=drug),arrow=arrow(length=unit(.13,"in")),linewidth=1,colour="grey45")+
-  geom_point(aes(Q2_WT,drug,colour="Egr1 WT"),size=4.5)+
-  geom_point(aes(Q2_KD,drug,colour="Egr1 KD"),size=4.5)+
-  scale_colour_manual(values=c("Egr1 WT"="#1874CD","Egr1 KD"="grey55"),name=NULL,breaks=c("Egr1 WT","Egr1 KD"))+
-  labs(title="Statins lose male-selectivity\nafter Egr1 KD",
-       x="Male-vs-female sensitivity (Q2)\n← more male-biased",y=NULL)+th
-ggsave(file.path(out,"Figure5_panelF_statins.pdf"),pf,width=6,height=4.4)
-ggsave(file.path(out,"Figure5_panelF_statins.png"),pf,width=6,height=4.4,dpi=200,bg="white")
+## ================= PANEL f : REMOVED — statin spotlight no longer used =================
 
 ## ================= PANEL g : mevalonate/SREBP2 heatmap =================
 M<-read.delim(file.path(de_dir,"Male_Egr1KDg3_vs_Male_NoTreatg1_DE_vst_filtered_091625.txt"))
 Fm<-read.delim(file.path(de_dir,"Female_Egr1KDg3_vs_Female_NoTreatg1_DE_vst_filtered_091625.txt"))
-ccM<-toupper(na.omit(read.csv(file.path(cc_dir,"overlap_MaleCC_20kb_NearestGene_vs_Egr1g3vsNeg1.csv"))$Gene))
+## per-sex Egr1 CC binding: gene is the nearest gene of a CC peak within 20 kb, in THAT sex
+ccbound<-function(fn){d<-read.delim(file.path(cc_dir,fn),check.names=FALSE)
+  unique(na.omit(toupper(d[["Gene Name1"]][abs(d[["Distance1"]])<=20000])))}
+mBound<-ccbound("Male_Egr1CC_peaks_20kbThreshhold_090825.txt")
+fBound<-ccbound("Female_Egr1CC_peaks_20kbThreshhold_090825.txt")
 genes<-c("Srebf2","Insig1","Hmgcr","Hmgcs1","Mvk","Mvd","Idi1","Fdps","Fdft1",
          "Sqle","Lss","Cyp51","Dhcr24","Dhcr7","Msmo1","Nsdhl","Sc5d","Ldlr","Vldlr")
 gv<-function(sym,tab){r<-tab[!is.na(tab$SYMBOL)&toupper(tab$SYMBOL)==toupper(sym),]
-  if(nrow(r)==0)return(c(NA,NA)); r<-r[which.max(r$baseMean),]; c(r$log2FoldChange,r$pvalue)}
+  if(nrow(r)==0)return(c(NA,NA)); r<-r[which.max(r$baseMean),]; c(r$log2FoldChange,r$padj)}  # padj (FDR)
 H<-do.call(rbind,lapply(genes,function(g){
   vM<-gv(g,M);vF<-gv(g,Fm)
-  rbind(data.frame(gene=g,sex="Male",lfc=vM[1],p=vM[2],direct=toupper(g)%in%ccM),
-        data.frame(gene=g,sex="Female",lfc=vF[1],p=vF[2],direct=toupper(g)%in%ccM))}))
+  rbind(data.frame(gene=g,sex="Male",  lfc=vM[1],p=vM[2],bound=toupper(g)%in%mBound),
+        data.frame(gene=g,sex="Female",lfc=vF[1],p=vF[2],bound=toupper(g)%in%fBound))}))
 H$gene<-factor(H$gene,levels=rev(genes)); H$sex<-factor(H$sex,levels=c("Male","Female"))
-H$sig<-!is.na(H$p)&H$p<=0.05&abs(H$lfc)>=0.5
-ylabs<-rev(sapply(genes,function(g) if(toupper(g)%in%ccM) paste0(g," ★") else g))
+H$sig<-!is.na(H$p)&H$p<=0.05&abs(H$lfc)>=0.5          # H$p is padj (FDR); calls identical to raw p for these genes
+H$txt<-ifelse(H$sig,sprintf("%.2f",H$lfc),"")        # show the log2FC value on each significant DEG tile
+H$txtcol<-ifelse(H$sig&abs(H$lfc)>=1.0,"white","black")   # keep the number legible on darker tiles
+H$star<-ifelse(H$bound,"*","")                        # * on a tile = Egr1 CC-bound in THAT sex (male or female independently)
+H$starcol<-ifelse(!is.na(H$lfc)&abs(H$lfc)>=1.0,"white","black")   # keep * legible on saturated tiles
+geq<-intToUtf8(0x2265); leq<-intToUtf8(0x2264)       # glyphs from code points -> ASCII source
 pg<-ggplot(H,aes(sex,gene,fill=lfc))+geom_tile(colour="grey85")+
-  geom_text(aes(label=ifelse(sig,"*","")),vjust=.78,size=6)+
+  geom_text(aes(label=txt,colour=txtcol),vjust=.5,size=4.2,fontface="bold")+
+  geom_text(aes(label=star,colour=starcol),nudge_x=0.34,size=7,fontface="bold")+  # * at right edge of each tile = CC-bound in that sex
+  scale_colour_identity()+
   scale_fill_gradient2(low="#2166ac",mid="white",high="#b2182b",midpoint=0,name="log2FC\n(KD vs WT)",limits=c(-1.7,1.7))+
-  scale_y_discrete(labels=ylabs)+
-  labs(title="Egr1 represses the sterol\nprogram (male-specific)",x=NULL,y=NULL,
-       caption="★ direct Egr1 CC target   * DEG (|lfc|≥0.5, p≤0.05)")+
-  th+theme(axis.text.y=element_text(size=13),plot.caption=element_text(size=11,hjust=0))
-ggsave(file.path(out,"Figure5_panelG_sterolHeatmap.pdf"),pg,width=5,height=7.2)
-ggsave(file.path(out,"Figure5_panelG_sterolHeatmap.png"),pg,width=5,height=7.2,dpi=200,bg="white")
+  labs(title="Egr1 binds & represses the\nsterol program (male-specific)",x=NULL,y=NULL,
+       caption=paste0("colour/number = log2FC of DEGs (|lfc|",geq,"0.5, padj",leq,"0.05)\n* = Egr1 CC-bound within 20 kb in that sex"))+
+  th+theme(axis.text.y=element_text(size=14),plot.caption=element_text(size=11,hjust=0))
+ggsave(file.path(out,"Figure5_sterolHeatmap.pdf"),pg,width=5,height=7.2,device=cairo_pdf)
+ggsave(file.path(out,"Figure5_sterolHeatmap.png"),pg,width=5,height=7.2,dpi=300,bg="white")
 
-cat("built d,e,f,g. WT male-biased hits K =",K,"of N =",N,"\n")
-cat("class table:\n"); print(as.data.frame(ce[,c("class","n","hits","frac","p")]),digits=3,row.names=FALSE)
-cat("\nstatins:\n"); print(sf[,c("drug","Q2_WT","Q2_KD")],row.names=FALSE,digits=3)
+cat("built panel d (Egr1-dependence collapse) and panel g (sterol heatmap); panels e and f removed.\n")

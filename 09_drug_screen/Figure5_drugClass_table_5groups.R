@@ -1,6 +1,6 @@
 ## Drug-class table collapsed to the 5 super-classes used in panel D, x Egr1-dependence
 ## compartment (WT-only / Shared / KD-only). Same idea as Figure5_drugClass_table.pdf.
-suppressMessages({library(readxl); library(gridExtra); library(grid)})
+suppressMessages({library(readxl); library(gridExtra); library(grid); library(gtable)})
 wb  <- "C:/Users/loril/Documents/Egr1/Egr1 manuscript/Final Submission/Cell Titer Glo/Maxene Drug Screen/85compoundsCheck_analyses_July2026.xlsx"
 out <- "C:/Users/loril/Documents/GitHub/Egr1-Llaci/09_drug_screen"
 
@@ -81,6 +81,13 @@ lay <- g$layout
 for(r in 2:(nr+1)){ id <- which(lay$t==r & lay$l==1 & lay$name=="core-fg"); if(length(id)) g$grobs[[id]]$gp <- gpar(fontface="bold", fontsize=12) }
 ## sensible column widths
 g$widths <- unit(c(2.6, 3.1, 3.1, 3.1), "in")
+## uniform horizontal separators under the header and under every class row
+for(r in 1:(nr+1)){
+  g <- gtable_add_grob(g,
+        segmentsGrob(x0=unit(0,"npc"), x1=unit(1,"npc"), y0=unit(0,"npc"), y1=unit(0,"npc"),
+                     gp=gpar(lwd=1.6, col="grey55")),
+        t=r, b=r, l=1, r=ncol(g), z=Inf, name=paste0("hsep",r))
+}
 
 title <- textGrob("Sex-biased drug-sensitivity hits by class and Egr1 dependence",
                   gp=gpar(fontsize=18, fontface="bold"))

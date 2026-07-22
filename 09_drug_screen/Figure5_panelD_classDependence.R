@@ -81,7 +81,7 @@ th <- theme_bw(base_size=16)+theme(axis.text=element_text(size=14,colour="black"
       panel.grid.major.y=element_blank(), panel.grid.minor=element_blank())
 
 p <- ggplot(agg,aes(n,super,fill=cat))+
-  geom_col(width=.66,colour="grey30")+
+  geom_col(width=.66,colour="grey30",position=position_stack(reverse=TRUE))+   # Egr1-dependent (dark) on the LEFT
   geom_text(data=lab,aes(x=total,y=super,label=txt),hjust=-0.08,size=5,fontface="bold",colour="#08519c",inherit.aes=FALSE)+
   scale_fill_manual(values=c("Egr1-dependent (lost after KD)"="#1874CD",
                              "Egr1-independent (shared)"="#a6cee3","Gained after KD"="#C71585"))+

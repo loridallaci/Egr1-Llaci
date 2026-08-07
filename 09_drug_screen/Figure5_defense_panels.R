@@ -158,6 +158,37 @@ p <- ggplot(cl, aes(pct, Class)) +
   base_thm
 save2(p, "panelD_pctEgr1dep_byClass", 10.5, 7.0)
 
+## ---- Panel D2: class composition of ALL Egr1-dependent drugs ----------------
+## Panel D above asks "what fraction of hits in each class are Egr1-dependent"
+## and is therefore restricted to WT hits. This panel instead takes the full set
+## of Egr1-dependent drugs (Q4 raw p <= 0.05) and shows how they distribute
+## across drug classes - i.e. how many pathways the Egr1-dependent vulnerability
+## spans. All Q4-significant compounds are sex-biased hits, so this set is the
+## same 37 either way; what changes is that the denominator is the 37, not the
+## hits per class.
+dd <- res[dep, ]
+cd <- as.data.frame(table(dd$Class), stringsAsFactors = FALSE)
+names(cd) <- c("Class", "n")
+cd <- cd[cd$n > 0, ]
+cd$pct <- 100 * cd$n / sum(cd$n)
+cd <- cd[order(cd$n, cd$Class, decreasing = c(FALSE, TRUE), method = "radix"), ]
+cd$Class <- factor(cd$Class, levels = cd$Class)
+cat(sprintf("  panel D2: %d Egr1-dependent drugs spanning %d classes\n",
+            sum(cd$n), nrow(cd)))
+
+p <- ggplot(cd, aes(n, Class)) +
+  geom_col(fill = "#3B4CC0", width = 0.75) +
+  geom_text(aes(label = sprintf("%d  (%.0f%%)", n, pct)),
+            hjust = -0.12, size = 5, fontface = "bold") +
+  scale_x_continuous(limits = c(0, max(cd$n) * 1.42),
+                     breaks = scales::breaks_pretty(5)) +
+  labs(title = "Egr1-dependent drug vulnerabilities span multiple classes",
+       subtitle = sprintf("all %d Egr1-dependent drugs (Q4 raw p <= 0.05), across %d drug classes",
+                          sum(cd$n), nrow(cd)),
+       x = "number of Egr1-dependent drugs", y = NULL) +
+  base_thm
+save2(p, "panelD2_Egr1dependent_byClass", 10.5, 7.0)
+
 ## ---- Panel E: dumbbell, WT vs KD sex difference for all union hits ----------
 ## Grey = Egr1 WT, blue = Egr1 KD; arrow shows the WT->KD shift. Bold label =
 ## significant Egr1 x sex interaction (Q4 raw p <= 0.05). Duplicate compound

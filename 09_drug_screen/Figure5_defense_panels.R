@@ -13,10 +13,18 @@
 ##   give 61 / 52 / 28. The two must not be mixed.
 ##
 ## Panels written to 09_drug_screen/defense_panels/:
-##   panelB_scatter_MvF_z        male vs female z, WT and KD facets
-##   panelB_barchart_hitcounts   sex-biased hits per genotype
-##   panelC_pie_Egr1dependence   % of WT hits that are Egr1-dependent
-##   panelD_pctEgr1dep_byClass   same, broken down by drug class
+##   panelB_scatter_MvF_z         male vs female z, WT and KD facets
+##   panelB_barchart_hitcounts    sex-biased hits per genotype (WT 61+2, KD 51+2)
+##   panelC_pie_Egr1dependence    Egr1-dependence of the WT-or-KD UNION (n=64: 37/27)
+##   panelD_pctEgr1dep_byClass    Egr1-dependence of WT hits ONLY (n=63: 37/26), by class
+##   panelE_dumbbell_WTvsKD_n64   per-compound WT->KD shift for the union (n=64)
+##
+## NOTE the two denominators are deliberately different and must not be swapped:
+##   panel C = WT-or-KD union      = 64 rows -> 37 dependent / 27 independent
+##   panel D = WT sex-biased hits  = 63 rows -> 37 dependent / 26 independent
+## They differ because 1 compound (Vanillin) is a KD-only hit, and THIOGUANINE
+## appears twice in the 85-compound plate, so union-by-row (64) exceeds
+## union-by-name (63).
 ##
 ## Fonts follow the lab presentation standard (ticks >=14, axis titles >=16,
 ## plot titles >=18, legend >=14).
@@ -36,9 +44,16 @@ cat(sprintf("loaded %d compounds\n", nrow(res)))
 
 ALPHA <- 0.05
 save2 <- function(p, name, w, h) {
-  ggsave(file.path(OUT, paste0(name, ".pdf")), p, width = w, height = h, device = cairo_pdf)
-  ggsave(file.path(OUT, paste0(name, ".png")), p, width = w, height = h, dpi = 300)
-  cat("  wrote", name, ".pdf/.png\n")
+  ok <- c(pdf = FALSE, png = FALSE)
+  ok["pdf"] <- tryCatch({ ggsave(file.path(OUT, paste0(name, ".pdf")), p,
+                                 width = w, height = h, device = cairo_pdf); TRUE },
+                        error = function(e) FALSE)
+  ok["png"] <- tryCatch({ ggsave(file.path(OUT, paste0(name, ".png")), p,
+                                 width = w, height = h, dpi = 300); TRUE },
+                        error = function(e) FALSE)
+  cat(sprintf("  %-32s pdf:%s png:%s%s\n", name,
+              ifelse(ok["pdf"], "ok", "LOCKED"), ifelse(ok["png"], "ok", "LOCKED"),
+              if (all(ok)) "" else "   <-- close the open file and re-run"))
 }
 base_thm <- theme_bw(base_size = 16) +
   theme(plot.title    = element_text(size = 18, face = "bold"),
@@ -93,8 +108,15 @@ p <- ggplot(bc, aes(geno, n, fill = cat)) +
   base_thm + theme(legend.position = "bottom")
 save2(p, "panelB_barchart_hitcounts", 7.0, 5.4)
 
-## ---- Panel C: Egr1-dependence pie (of WT hits) ------------------------------
-nd <- sum(wt_hit & dep); ni <- sum(wt_hit & !dep); tot <- nd + ni
+## ---- Panel C: Egr1-dependence pie -------------------------------------------
+## Denominator = the UNION of WT and KD sex-biased hits (64), not WT alone (63).
+## Both thioguanine runs are retained as separate rows, so 64 = 63 unique
+## compounds + the second thioguanine run. All 37 Q4-significant compounds fall
+## inside this union, so the split is 37 dependent / 27 independent.
+uni_hit <- wt_hit | kd_hit
+nd <- sum(uni_hit & dep); ni <- sum(uni_hit & !dep); tot <- nd + ni
+cat(sprintf("  panel C denominator = WT-or-KD union: %d (%d dependent / %d independent)\n",
+            tot, nd, ni))
 pie <- data.frame(lab = c("Egr1-dependent\n(sig. interaction)", "Egr1-independent"),
                   n = c(nd, ni))
 pie$pct <- round(100 * pie$n / tot)
@@ -103,13 +125,21 @@ p <- ggplot(pie, aes("", n, fill = lab)) +
   geom_text(aes(label = sprintf("%d\n(%d%%)", n, pct)),
             position = position_stack(vjust = 0.5), size = 6, fontface = "bold") +
   scale_fill_manual(values = c("#3B4CC0", "grey75")) +
-  labs(title = sprintf("Egr1 dependence (n = %d WT sex-biased hits)", tot)) +
+  labs(title = "Egr1 dependence of sex-biased hits",
+       subtitle = sprintf("n = %d hits sex-biased in WT or KD", tot)) +
   theme_void(base_size = 16) +
-  theme(plot.title = element_text(size = 18, face = "bold", hjust = 0.5),
-        legend.text = element_text(size = 14), legend.title = element_blank())
-save2(p, "panelC_pie_Egr1dependence", 7.2, 5.2)
+  theme(plot.title    = element_text(size = 18, face = "bold", hjust = 0.5),
+        plot.subtitle = element_text(size = 14, hjust = 0.5, margin = margin(b = 6)),
+        legend.text   = element_text(size = 14), legend.title = element_blank())
+save2(p, "panelC_pie_Egr1dependence", 8.0, 5.6)
 
 ## ---- Panel D: % Egr1-dependent by drug class --------------------------------
+## Panel D's denominator is WT hits only (63) - NOT panel C's union (64).
+## Compute it locally so the subtitle can never drift from the bars.
+nd_wt  <- sum(wt_hit & dep)
+tot_wt <- sum(wt_hit)
+cat(sprintf("  panel D denominator = WT hits only: %d (%d dependent)\n", tot_wt, nd_wt))
+
 w <- res[wt_hit, ]
 cl <- aggregate(cbind(dep = dep[wt_hit], tot = rep(1, sum(wt_hit))) ~ Class, data = w, FUN = sum)
 cl$pct <- 100 * cl$dep / cl$tot
@@ -123,9 +153,50 @@ p <- ggplot(cl, aes(pct, Class)) +
   scale_x_continuous(limits = c(0, 128), breaks = seq(0, 100, 25),
                      labels = paste0(seq(0, 100, 25), "%")) +
   labs(title = "Sex-biased drug vulnerability is Egr1-dependent",
-       subtitle = sprintf("%d of %d WT sex-biased hits are Egr1-dependent", nd, tot),
+       subtitle = sprintf("%d of %d WT sex-biased hits are Egr1-dependent", nd_wt, tot_wt),
        x = "% of WT sex-biased hits that are Egr1-dependent", y = NULL) +
   base_thm
 save2(p, "panelD_pctEgr1dep_byClass", 10.5, 7.0)
+
+## ---- Panel E: dumbbell, WT vs KD sex difference for all union hits ----------
+## Grey = Egr1 WT, blue = Egr1 KD; arrow shows the WT->KD shift. Bold label =
+## significant Egr1 x sex interaction (Q4 raw p <= 0.05). Duplicate compound
+## names (THIOGUANINE appears twice) are disambiguated as "(run 1)/(run 2)".
+lab <- res$Compound
+dupn <- names(which(table(lab) > 1))
+for (d in dupn) {
+  ix <- which(lab == d)
+  lab[ix] <- sprintf("%s (run %d)", d, seq_along(ix))
+}
+lab <- tools::toTitleCase(tolower(lab))
+
+db <- data.frame(drug = lab, wt = res$Q2WT_est, kd = res$Q2KD_est,
+                 sig = dep, stringsAsFactors = FALSE)[uni_hit, ]
+db <- db[order(db$wt), ]
+db$drug <- factor(db$drug, levels = db$drug)
+long <- rbind(data.frame(drug = db$drug, z = db$wt, geno = "Egr1 WT"),
+              data.frame(drug = db$drug, z = db$kd, geno = "Egr1 KD"))
+long$geno <- factor(long$geno, c("Egr1 WT", "Egr1 KD"))
+
+p <- ggplot(db) +
+  geom_vline(xintercept = 0, colour = "grey40", linewidth = 0.4) +
+  geom_segment(aes(x = wt, xend = kd, y = drug, yend = drug, linewidth = sig),
+               colour = "grey25", arrow = arrow(length = unit(0.10, "cm"), type = "closed")) +
+  geom_point(data = long, aes(z, drug, colour = geno), size = 2.4) +
+  scale_linewidth_manual(values = c("FALSE" = 0.25, "TRUE" = 0.75), guide = "none") +
+  scale_colour_manual(values = c("Egr1 WT" = "grey55", "Egr1 KD" = "#1E90FF")) +
+  labs(title = sprintf("Sex-biased drug-screen hits (n = %d): WT vs KD", nrow(db)),
+       subtitle = sprintf("ordered by WT male-vs-female z\nbold = significant Egr1 x sex interaction (raw p <= 0.05, n = %d)", sum(db$sig)),
+       x = "Male-vs-female sensitivity in WT (Q2), z units", y = NULL) +
+  theme_bw(base_size = 14) +
+  theme(plot.title = element_text(size = 16, face = "bold"),
+        plot.subtitle = element_text(size = 10),
+        axis.title.x = element_text(size = 14),
+        axis.text.y = element_text(size = 8,
+                       face = ifelse(db$sig, "bold", "plain"), colour = "black"),
+        axis.text.x = element_text(size = 12, colour = "black"),
+        legend.position = "top", legend.title = element_blank(),
+        panel.grid.minor = element_blank())
+save2(p, "panelE_dumbbell_WTvsKD_n64", 7.5, 12.5)
 
 cat("\nAll panels written to", normalizePath(OUT), "\n")

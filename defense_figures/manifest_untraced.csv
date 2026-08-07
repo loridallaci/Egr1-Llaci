@@ -1,0 +1,103 @@
+slides,slide_title,extracted_as,bytes
+3,Sex differences are clinically important ,s03_image1.png,525073
+"3,4,6,10,26,30",Sex differences are clinically important ,s03_image2.png,8514
+"3,4,6,10,26,30",Sex differences are clinically important ,s03_image3.png,8186
+6,Males have a higher incidence of Glioblastoma (GBM),s06_image4.png,386024
+6,Males have a higher incidence of Glioblastoma (GBM),s06_image5.png,704895
+6,Males have a higher incidence of Glioblastoma (GBM),s06_hdphoto1.wdp,499500
+7,OBTS: 2007-2017,s07_image6.png,59215
+7,OBTS: 2007-2017,s07_image7.png,57111
+10,Evidence against circulating hormones; pediatric cancers are,s10_image8.jpg,87304
+10,Evidence against circulating hormones; pediatric cancers are,s10_image9.svg,4661
+10,Evidence against circulating hormones; pediatric cancers are,s10_image10.svg,4661
+10,Evidence against circulating hormones; pediatric cancers are,s10_image11.tif,17703380
+11,How can we study these cell-intrinsic sex differences in GBM,s11_image12.png,113332
+"13,14,23",An autosome-isogenic mouse model to study sex differences in,s13_image13.png,223131
+"13,14",An autosome-isogenic mouse model to study sex differences in,s13_image14.jpeg,6363
+"13,14",An autosome-isogenic mouse model to study sex differences in,s13_image15.png,26528
+"13,14",An autosome-isogenic mouse model to study sex differences in,s13_image16.png,260476
+15,This model displays sex differences in tumorigenic phenotype,s15_image17.png,664319
+15,This model displays sex differences in tumorigenic phenotype,s15_image18.png,263406
+16,This autosomal model recapitulates human GBM,s16_image19.png,505873
+16,This autosomal model recapitulates human GBM,s16_image20.jpeg,58391
+16,This autosomal model recapitulates human GBM,s16_image21.png,1006523
+17,What have we learned from this mouse model?,s17_image22.png,642466
+17,What have we learned from this mouse model?,s17_image23.png,680145
+19,Sex differences exist in gene expression and chromatin acces,s19_image28.png,476640
+19,Sex differences exist in gene expression and chromatin acces,s19_image29.png,569329
+"20,28,29,31,85,86,87",Gene expression is a tightly regulated process,s20_image30.png,4054
+"20,28,31,85,86,87",Gene expression is a tightly regulated process,s20_image31.png,25652
+23,Males,s23_image32.png,37348
+23,Males,s23_image33.png,24967
+23,Males,s23_image34.png,8355
+23,Males,s23_image35.png,181667
+24,Multiome,s24_image36.png,52415
+24,Multiome,s24_image37.png,52275
+24,Multiome,s24_image38.tiff,1476478
+24,Multiome,s24_image39.tiff,1476542
+24,Multiome,s24_image40.tiff,1639134
+24,Multiome,s24_image41.tiff,1645004
+24,Multiome,s24_image42.png,203000
+24,Multiome,s24_image43.png,241268
+25,Male and female GBM cells have different chromatin accessibi,s25_image44.svg,93351
+25,Male and female GBM cells have different chromatin accessibi,s25_image45.svg,132272
+26,"There are 37,000 DARs between male and female GBM cells",s26_image46.svg,614367
+30,Egr1 is not differentially expressed in ,s30_image47.png,149490
+30,Egr1 is not differentially expressed in ,s30_image48.png,8493
+32,Motif enrichment in ,s32_image49.emf,581972
+32,Motif enrichment in ,s32_image50.png,177336
+32,Motif enrichment in ,s32_image51.png,203499
+34,157,s34_image54.emf,12520
+37,Egr1 is the top TF enriched in male candidate CREs and that ,s37_image57.emf,50888
+37,Egr1 is the top TF enriched in male candidate CREs and that ,s37_image58.emf,51832
+38,Egr1 is the top TF enriched in male candidate CREs and that ,s38_image59.svg,26489
+40,"Egr1 motif is active in most male cells, but only active in ",s40_image60.png,1797137
+42,Egr1 (Early growth response 1) regulates response to a varie,s42_image72.png,348202
+45,H) ,s45_image74.png,521406
+45,H) ,s45_image75.png,336983
+"46,62",Egr1 KD and measure ,s46_image76.png,82949
+47,Prediction: Knockdown Egr1 will attenuate sex differences in,s47_image77.emf,32232
+47,Prediction: Knockdown Egr1 will attenuate sex differences in,s47_image78.emf,53316
+"47,50,53,56,57",Prediction: Knockdown Egr1 will attenuate sex differences in,s47_image79.png,17371
+"47,50,53,56,57",Prediction: Knockdown Egr1 will attenuate sex differences in,s47_image80.png,17413
+"48,72",Egr1 is required for sex differences in GBM proliferation,s48_image81.png,91013
+49,Clonogenic assay to measure stem cell frequency,s49_image82.png,89675
+51,Egr1 is required for sex differences in GBM clonogenicity,s51_image83.png,153300
+52,Invasion assay to measure invasive properties,s52_image84.png,103125
+53,MOCK DATA,s53_image85.emf,15712
+53,MOCK DATA,s53_image86.emf,15832
+54,Egr1 is required for sex differences in invasion in GBM cell,s54_image91.png,541768
+54,Egr1 is required for sex differences in invasion in GBM cell,s54_image92.png,146550
+54,Egr1 is required for sex differences in invasion in GBM cell,s54_image93.png,137625
+55,In vivo ,s55_image94.svg,665258
+56,Prediction: Knockdown Egr1 will attenuate sex differences in,s56_image95.emf,13648
+56,Prediction: Knockdown Egr1 will attenuate sex differences in,s56_image96.emf,13372
+57,Egr1 KD attenuates sex differences in GBM tumorigenesis,s57_image97.emf,33680
+57,Egr1 KD attenuates sex differences in GBM tumorigenesis,s57_image98.emf,30220
+57,Egr1 KD attenuates sex differences in GBM tumorigenesis,s57_image99.emf,4742664
+57,Egr1 KD attenuates sex differences in GBM tumorigenesis,s57_image100.emf,5650352
+63,Egr1 CC binding worked for both males and females,s63_image101.png,354179
+63,Egr1 CC binding worked for both males and females,s63_image102.png,76244
+"64,67",Egr1 plays a role in gene expression in both male and female,s64_image103.emf,7832
+64,Egr1 plays a role in gene expression in both male and female,s64_image104.png,102871
+65,CC and bulk ,s65_image105.svg,1895
+65,CC and bulk ,s65_image106.svg,1745
+65,CC and bulk ,s65_image107.png,44317
+67,Male Egr1 regulon of downregulated genes is significantly as,s67_image108.svg,4358
+"67,68",Male Egr1 regulon of downregulated genes is significantly as,s67_image109.png,36893
+67,Male Egr1 regulon of downregulated genes is significantly as,s67_image110.png,156648
+67,Male Egr1 regulon of downregulated genes is significantly as,s67_image111.png,160510
+71,We selected 4 direct Egr1 targets for a focused study,s71_image112.png,18797
+72,Egr1 targets attenuate sex differences in mouse GBM cells pr,s72_image113.png,20322
+72,Egr1 targets attenuate sex differences in mouse GBM cells pr,s72_image114.png,76157
+76,Testing Egr1 targets by qPCR on ,s76_image115.emf,51060
+76,Testing Egr1 targets by qPCR on ,s76_image116.emf,48816
+76,Testing Egr1 targets by qPCR on ,s76_image117.emf,48168
+76,Testing Egr1 targets by qPCR on ,s76_image118.emf,46656
+78,Drug screen to reveal sex-biased vulnerabilities dependent o,s78_image119.png,60088
+79,62 of 64 of sex-biased responses are male-biased,s79_image120.png,203783
+81,Egr1-dependent sex-biased drug hit 12 different pathways ,s81_image123.png,150996
+92,Rob Mitra,s92_image128.png,23074
+92,Rob Mitra,s92_image129.png,80499
+92,Rob Mitra,s92_image130.png,18835
+92,Rob Mitra,s92_image131.png,106394

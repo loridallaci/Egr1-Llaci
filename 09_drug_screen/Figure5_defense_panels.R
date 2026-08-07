@@ -66,11 +66,22 @@ base_thm <- theme_bw(base_size = 16) +
         panel.grid.minor = element_blank())
 
 ## ---- hit definitions (raw p) ------------------------------------------------
-wt_hit <- res$Q2WT_p <= ALPHA
-kd_hit <- res$Q2KD_p <= ALPHA
-dep    <- res$Q4_p  <= ALPHA          # sex difference significantly changed by KD
-cat(sprintf("WT hits %d | KD hits %d | Q4 (Egr1-dependent) %d\n",
-            sum(wt_hit), sum(kd_hit), sum(dep)))
+wt_hit  <- res$Q2WT_p <= ALPHA
+kd_hit  <- res$Q2KD_p <= ALPHA
+dep     <- res$Q4_p  <= ALPHA         # sex difference significantly changed by KD
+uni_hit <- wt_hit | kd_hit            # sex-biased in EITHER genotype
+
+## Direction across the union: a compound's sex is taken from whichever
+## genotype it is a hit in. No compound flips direction between genotypes.
+uni_dir <- ifelse(wt_hit, ifelse(res$Q2WT_est < 0, "M", "F"),
+                          ifelse(res$Q2KD_est < 0, "M", "F"))
+uni_M <- sum(uni_hit & uni_dir == "M")
+uni_F <- sum(uni_hit & uni_dir == "F")
+
+cat(sprintf("WT hits %d (%dM/%dF) | KD hits %d (%dM/%dF) | union %d (%dM/%dF) | Q4 %d\n",
+            sum(wt_hit), sum(wt_hit & res$Q2WT_est < 0), sum(wt_hit & res$Q2WT_est > 0),
+            sum(kd_hit), sum(kd_hit & res$Q2KD_est < 0), sum(kd_hit & res$Q2KD_est > 0),
+            sum(uni_hit), uni_M, uni_F, sum(dep)))
 
 ## ---- Panel B: male vs female z, per genotype --------------------------------
 mz <- function(pre) rowMeans(zz[, paste0(pre, "_z", 1:3)], na.rm = TRUE)
@@ -97,14 +108,27 @@ mk <- function(hit, est, lab) data.frame(geno = lab,
   cat = c("Male-biased hit", "Female-biased hit", "n.s."),
   n = c(sum(hit & est < 0), sum(hit & est > 0), sum(!hit)))
 bc <- rbind(mk(wt_hit, res$Q2WT_est, "WT cells"), mk(kd_hit, res$Q2KD_est, "KD cells"))
+## Label each genotype with its TOTAL number of sex-biased hits, so the
+## male-biased bar (61) is not misread as the WT hit total (63). The union
+## across genotypes is 64, of which 62 are male-biased - that is the
+## "62 of 64" figure, a different denominator from either bar here.
 bc$geno <- factor(bc$geno, c("WT cells", "KD cells"))
 bc$cat  <- factor(bc$cat, c("Male-biased hit", "Female-biased hit", "n.s."))
+tot_lab <- data.frame(
+  geno = factor(c("WT cells", "KD cells"), c("WT cells", "KD cells")),
+  n    = c(sum(wt_hit), sum(kd_hit)))
+tot_lab$txt <- sprintf("%d sex-biased hits", tot_lab$n)
 
 p <- ggplot(bc, aes(geno, n, fill = cat)) +
   geom_col(position = position_dodge(0.8), width = 0.75) +
   geom_text(aes(label = n), position = position_dodge(0.8), vjust = -0.4, size = 5) +
-  scale_fill_manual(values = COL) + expand_limits(y = max(bc$n) * 1.12) +
-  labs(title = "Sex-biased hits per genotype", x = NULL, y = "number of drugs") +
+  geom_text(data = tot_lab, aes(geno, y = max(bc$n) * 1.16, label = txt),
+            inherit.aes = FALSE, size = 5, fontface = "bold") +
+  scale_fill_manual(values = COL) + expand_limits(y = max(bc$n) * 1.24) +
+  labs(title = "Sex-biased hits per genotype",
+       subtitle = sprintf("%d drugs sex-biased in WT or KD; %d of those are male-biased",
+                          sum(uni_hit), uni_M),
+       x = NULL, y = "number of drugs") +
   base_thm + theme(legend.position = "bottom")
 save2(p, "panelB_barchart_hitcounts", 7.0, 5.4)
 
@@ -113,7 +137,6 @@ save2(p, "panelB_barchart_hitcounts", 7.0, 5.4)
 ## Both thioguanine runs are retained as separate rows, so 64 = 63 unique
 ## compounds + the second thioguanine run. All 37 Q4-significant compounds fall
 ## inside this union, so the split is 37 dependent / 27 independent.
-uni_hit <- wt_hit | kd_hit
 nd <- sum(uni_hit & dep); ni <- sum(uni_hit & !dep); tot <- nd + ni
 cat(sprintf("  panel C denominator = WT-or-KD union: %d (%d dependent / %d independent)\n",
             tot, nd, ni))

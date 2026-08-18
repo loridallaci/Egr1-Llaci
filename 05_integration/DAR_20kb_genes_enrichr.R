@@ -118,7 +118,7 @@ write.csv(data.frame(
   set = c("MALEup_all","FEMALEup_all","MALEup_DEconcordant","FEMALEup_DEconcordant"),
   n_genes = c(length(genes_M_all), length(genes_F_all), length(genes_M_de), length(genes_F_de)),
   n_DARs  = c(length(dar_M), length(dar_F), length(dar_M), length(dar_F)),
-  window_bp = WINDOW, autosomal_only = TRUE),
+  window_bp = WINDOW, autosomal_only = AUTOSOMAL_ONLY),
   file.path(OutputDirectory, "DAR_20kb_gene_counts.csv"), row.names = FALSE)
 
 ## ---- Enrichr ------------------------------------------------------------------

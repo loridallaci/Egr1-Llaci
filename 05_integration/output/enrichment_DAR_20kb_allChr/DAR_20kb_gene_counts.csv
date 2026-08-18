@@ -1,0 +1,5 @@
+"set","n_genes","n_DARs","window_bp","autosomal_only"
+"MALEup_all",9528,17060,20000,TRUE
+"FEMALEup_all",9498,20018,20000,TRUE
+"MALEup_DEconcordant",1312,17060,20000,TRUE
+"FEMALEup_DEconcordant",1219,20018,20000,TRUE

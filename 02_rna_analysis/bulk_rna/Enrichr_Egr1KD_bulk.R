@@ -51,7 +51,7 @@ for (enrichr_db in dbs) {
     cat("  Skipping", enrichr_db, "- no results\n"); next
   }
   enrichr_output_df <- paste0(OutputDirectory, "/Male_Egr1KD_enriched_", enrichr_db, ".txt")
-  write.table(result, enrichr_output_df, quote = FALSE, row.names = TRUE, sep = '\t')
+  write.table(result, enrichr_output_df, quote = FALSE, row.names = FALSE, sep = '\t')
   
   enrichr_output_figure <- paste0(OutputDirectory, "/Male_Egr1KD_enriched_", enrichr_db, ".pdf")
   p <- plotEnrich(result, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value") +
@@ -72,7 +72,7 @@ for (enrichr_db in dbs) {
     cat("  Skipping", enrichr_db, "- no results\n"); next
   }
   enrichr_output_df <- paste0(OutputDirectory, "/Male_WT_enriched_", enrichr_db, ".txt")
-  write.table(result, enrichr_output_df, quote = FALSE, row.names = TRUE, sep = '\t')
+  write.table(result, enrichr_output_df, quote = FALSE, row.names = FALSE, sep = '\t')
   
   enrichr_output_figure <- paste0(OutputDirectory, "/Male_WT_enriched_", enrichr_db, ".pdf")
   p <- plotEnrich(result, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value") +
@@ -108,7 +108,7 @@ for (enrichr_db in dbs) {
     cat("  Skipping", enrichr_db, "- no results\n"); next
   }
   enrichr_output_df <- paste0(OutputDirectory, "/Female_Egr1KD_enriched_", enrichr_db, ".txt")
-  write.table(result, enrichr_output_df, quote = FALSE, row.names = TRUE, sep = '\t')
+  write.table(result, enrichr_output_df, quote = FALSE, row.names = FALSE, sep = '\t')
   
   enrichr_output_figure <- paste0(OutputDirectory, "/Female_Egr1KD_enriched_", enrichr_db, ".pdf")
   p <- plotEnrich(result, showTerms = 20, numChar = 60, y = "Count", orderBy = "P.value") +
@@ -129,7 +129,7 @@ for (enrichr_db in dbs) {
     cat("  Skipping", enrichr_db, "- no results\n"); next
   }
   enrichr_output_df <- paste0(OutputDirectory, "/Female_WT_enriched_", enrichr_db, ".txt")
-  write.table(result, enrichr_output_df, quote = FALSE, row.names = TRUE, sep = '\t')
+  write.table(result, enrichr_output_df, quote = FALSE, row.names = FALSE, sep = '\t')
   
   enrichr_output_figure <- paste0(OutputDirectory, "/Female_WT_enriched_", enrichr_db, ".pdf")
   p <- plotEnrich(result, showTerms = 20, numChar = 60, y = "Count", orderBy = "P.value") +

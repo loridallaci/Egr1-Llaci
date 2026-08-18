@@ -28,7 +28,7 @@ run_one <- function(sex, dir_lab, tag, title_lab) {
     result <- enriched[[db]]
     if (is.null(result) || nrow(result) == 0) { cat("  skip", db, "\n"); next }
     write.table(result, file.path(OutputDirectory, paste0(sex, "_", tag, "_", db, ".txt")),
-                quote = FALSE, row.names = TRUE, sep = "\t")
+                quote = FALSE, row.names = FALSE, sep = "\t")
     p <- plotEnrich(result, showTerms = 20, numChar = 50, y = "Count", orderBy = "P.value") +
       ggtitle(paste0(sex, " ", title_lab, "\n", db, "  (padj<=0.05 & |log2FC|>=0.5)")) +
       theme(plot.title = element_text(hjust = 0.5, size = 10))

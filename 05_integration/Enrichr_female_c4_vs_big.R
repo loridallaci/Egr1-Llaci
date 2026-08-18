@@ -46,7 +46,7 @@ run_enrichr <- function(genes, label, title_lab) {
     result <- enriched[[db]]
     if (is.null(result) || nrow(result) == 0) { cat("  skip", db, "(no results)\n"); next }
     write.table(result, file.path(OutputDirectory, paste0(label, "_", db, ".txt")),
-                quote = FALSE, row.names = TRUE, sep = "\t")
+                quote = FALSE, row.names = FALSE, sep = "\t")
     p <- plotEnrich(result, showTerms = 10, numChar = 45, y = "Count", orderBy = "P.value") +
       ggtitle(paste0(title_lab, "\n", db)) + big_fonts
     pdf(file.path(OutputDirectory, paste0(label, "_", db, ".pdf")),

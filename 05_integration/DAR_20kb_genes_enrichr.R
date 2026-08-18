@@ -1,18 +1,21 @@
 # =============================================================================
-# Genes within 20 kb of sex-biased DARs (multiome, male vs female), + Enrichr.
+# Genes near sex-biased DARs (multiome, male vs female), + Enrichr.
 #
-# DARs      : data output/lot6_MvsF_PeaksNormalized_DifferentialyAccesible_peaks.csv
-#             house threshold p_val_adj <= 0.05 & |avg_log2FC| >= 0.5
-# "within 20 kb" : gene BODY within 20,000 bp of a DAR (maxgap on findOverlaps),
-#             matching the window used in DE_near_DAR_20kb_enrichment_summary.csv
-# Autosomal only (chrX/chrY dropped), matching DAR_promoter_genes_by_sex.R.
+# DARs : data output/lot6_MvsF_PeaksNormalized_DifferentialyAccesible_peaks.csv
+#        filtered at DAR_PADJ / DAR_LFC (house default 0.05 and 0.5).
+# "near" = gene BODY within WINDOW bp of a DAR (maxgap on findOverlaps).
+#        The house default 20,000 matches DE_near_DAR_20kb_enrichment_summary.csv.
+#
+# All thresholds are set in the parameter block below and every filename, plot
+# title and console message is DERIVED from them, so nothing can silently keep
+# saying "20kb" after the window is changed.
 #
 # Two flavours of gene list are produced:
-#   ALL  = every gene within 20 kb of a male-up / female-up DAR
-#          (NOTE: DARs are dense, so these lists are close to genome-wide and
-#           Enrichr on them is expected to be uninformative - reported anyway)
-#   DEconc = sex-DE genes (padj<=0.05) within 20 kb of a DIRECTION-CONCORDANT DAR
-#          (male-higher genes near male-up DARs; female-higher near female-up)
+#   ALL  = every gene near a male-up / female-up DAR. DARs are dense, so these
+#          are close to genome-wide and Enrichr on them is uninformative;
+#          off by default (RUN_ALL_SETS).
+#   DEconc = sex-DE genes within WINDOW of a DIRECTION-CONCORDANT DAR
+#          (male-higher genes near male-up DARs; female-higher near female-up).
 #          This is the interpretable set.
 #
 # Same Enrichr workflow/databases/fonts as Enrichr_female_c4_vs_big.R.
@@ -25,7 +28,18 @@ suppressMessages({
 
 base <- "C:/Users/loril/Documents/GitHub/Egr1-Llaci"
 
-WINDOW <- 20000
+## ---- analysis parameters (everything downstream is derived from these) --------
+WINDOW   <- 20000   # bp: max distance from gene body to DAR
+DAR_PADJ <- 0.05    # DAR significance
+DAR_LFC  <- 0.5     # DAR |avg_log2FC|
+DE_PADJ  <- 0.05    # multiome male-vs-female DE significance
+
+## label used in every filename and plot title - derived, so it can never
+## disagree with WINDOW (e.g. 20000 -> "20kb", 1500 -> "1.5kb", 500 -> "500bp")
+WIN_TAG <- if (WINDOW >= 1000) {
+  v <- WINDOW / 1000
+  paste0(if (v == round(v)) format(v) else format(round(v, 1)), "kb")
+} else paste0(WINDOW, "bp")
 ## AUTOSOMAL_ONLY = FALSE (default) -> keep every chromosome including chrX/chrY/chrM.
 ##   This is the version that reproduces the canonical 1,312 / 1,219 concordant
 ##   gene counts, so it is the house default. Set TRUE to drop chrX/chrY/chrM.
@@ -43,8 +57,8 @@ RUN_ALL_SETS <- as.logical(Sys.getenv("RUN_ALL_SETS", "FALSE"))
 REPLOT_ONLY <- as.logical(Sys.getenv("REPLOT_ONLY", "FALSE"))
 
 OutputDirectory <- file.path(base, if (AUTOSOMAL_ONLY)
-  "05_integration/output/enrichment_DAR_20kb" else
-  "05_integration/output/enrichment_DAR_20kb_allChr")
+  paste0("05_integration/output/enrichment_DAR_", WIN_TAG) else
+  paste0("05_integration/output/enrichment_DAR_", WIN_TAG, "_allChr"))
 dir.create(OutputDirectory, showWarnings = FALSE, recursive = TRUE)
 cat("AUTOSOMAL_ONLY =", AUTOSOMAL_ONLY, "-> ", OutputDirectory, "\n")
 
@@ -52,8 +66,8 @@ cat("AUTOSOMAL_ONLY =", AUTOSOMAL_ONLY, "-> ", OutputDirectory, "\n")
 da <- read.csv(file.path(base, "data output/lot6_MvsF_PeaksNormalized_DifferentialyAccesible_peaks.csv"),
                stringsAsFactors = FALSE)
 colnames(da)[1] <- "peak"
-da <- da[da$p_val_adj <= 0.05 & abs(da$avg_log2FC) >= 0.5, ]
-cat("DARs passing padj<=0.05 & |LFC|>=0.5 :", nrow(da),
+da <- da[da$p_val_adj <= DAR_PADJ & abs(da$avg_log2FC) >= DAR_LFC, ]
+cat(sprintf("DARs passing padj<=%.3g & |LFC|>=%.3g : %d", DAR_PADJ, DAR_LFC, nrow(da)),
     " (male-up", sum(da$avg_log2FC > 0), "/ female-up", sum(da$avg_log2FC < 0), ")\n")
 
 peak2gr <- function(ids) {
@@ -79,18 +93,37 @@ near <- function(dar) sort(unique(gn$SYMBOL[queryHits(
 
 genes_M_all <- near(dar_M)
 genes_F_all <- near(dar_F)
-cat("within 20kb of MALE-up DAR  :", length(genes_M_all), "genes\n")
-cat("within 20kb of FEMALE-up DAR:", length(genes_F_all), "genes\n")
+cat("within", WIN_TAG, "of MALE-up DAR  :", length(genes_M_all), "genes\n")
+cat("within", WIN_TAG, "of FEMALE-up DAR:", length(genes_F_all), "genes\n")
 
 ## ---- direction-concordant, DE-restricted (interpretable set) ------------------
 de <- read.csv(file.path(base, "data output/DE_male_vs_female_allcells_allgenes.csv"),
                stringsAsFactors = FALSE)
 de <- de[!is.na(de$gene) & !duplicated(de$gene), ]
-de_sig <- de[!is.na(de$p_val_adj) & de$p_val_adj <= 0.05, ]
+de_sig <- de[!is.na(de$p_val_adj) & de$p_val_adj <= DE_PADJ, ]
 genes_M_de <- intersect(de_sig$gene[de_sig$avg_log2FC > 0], genes_M_all)
 genes_F_de <- intersect(de_sig$gene[de_sig$avg_log2FC < 0], genes_F_all)
 cat("male-higher DE genes near male-up DAR    :", length(genes_M_de), "\n")
 cat("female-higher DE genes near female-up DAR:", length(genes_F_de), "\n")
+
+## ---- how many sex-DE genes sit near a DAR, by direction -----------------------
+## Concordant = same direction (male-higher gene near a male-up DAR).
+## Discordant = opposite direction. Reported so the concordance is auditable.
+de_M <- de_sig$gene[de_sig$avg_log2FC > 0]      # male-higher
+de_F <- de_sig$gene[de_sig$avg_log2FC < 0]      # female-higher
+genes_any <- union(genes_M_all, genes_F_all)
+de_tab <- data.frame(
+  set          = c("male-higher DE", "female-higher DE"),
+  n_DE         = c(length(de_M), length(de_F)),
+  n_near_anyDAR    = c(sum(de_M %in% genes_any),   sum(de_F %in% genes_any)),
+  n_near_concordant= c(length(genes_M_de),         length(genes_F_de)),
+  n_near_discordant= c(sum(de_M %in% genes_F_all), sum(de_F %in% genes_M_all)))
+de_tab$pct_near_anyDAR     <- round(100 * de_tab$n_near_anyDAR / de_tab$n_DE, 1)
+de_tab$pct_near_concordant <- round(100 * de_tab$n_near_concordant / de_tab$n_DE, 1)
+cat("\n-- sex-DE genes near a DAR (window", WIN_TAG, ") --\n")
+print(de_tab, row.names = FALSE)
+write.csv(de_tab, file.path(OutputDirectory,
+          paste0("DE_near_DAR_", WIN_TAG, "_by_sex.csv")), row.names = FALSE)
 
 ## ---- chromosome composition of each gene set ----------------------------------
 chrom_of <- function(v) as.character(seqnames(gn))[match(v, gn$SYMBOL)]
@@ -103,23 +136,24 @@ chrtab <- do.call(rbind, lapply(
 chrtab$set <- rownames(chrtab); chrtab$pct_chrX <- round(100 * chrtab$n_chrX / chrtab$n_total, 2)
 print(chrtab[, c("set","n_total","n_chrX","pct_chrX","n_chrY","n_chrM")], row.names = FALSE)
 write.csv(chrtab[, c("set","n_total","n_chrX","pct_chrX","n_chrY","n_chrM")],
-          file.path(OutputDirectory, "DAR_20kb_chromosome_composition.csv"), row.names = FALSE)
+          file.path(OutputDirectory, paste0("DAR_", WIN_TAG, "_chromosome_composition.csv")), row.names = FALSE)
 
 ## ---- write gene tables --------------------------------------------------------
 wr <- function(v, f) write.csv(data.frame(SYMBOL = v), file.path(OutputDirectory, f), row.names = FALSE)
 if (RUN_ALL_SETS) {
-  wr(genes_M_all, "genes_within20kb_MALEup_DAR_all.csv")
-  wr(genes_F_all, "genes_within20kb_FEMALEup_DAR_all.csv")
+  wr(genes_M_all, paste0("genes_within", WIN_TAG, "_MALEup_DAR_all.csv"))
+  wr(genes_F_all, paste0("genes_within", WIN_TAG, "_FEMALEup_DAR_all.csv"))
 }
-wr(genes_M_de,  "genes_within20kb_MALEup_DAR_DEconcordant.csv")
-wr(genes_F_de,  "genes_within20kb_FEMALEup_DAR_DEconcordant.csv")
+wr(genes_M_de,  paste0("genes_within", WIN_TAG, "_MALEup_DAR_DEconcordant.csv"))
+wr(genes_F_de,  paste0("genes_within", WIN_TAG, "_FEMALEup_DAR_DEconcordant.csv"))
 
 write.csv(data.frame(
   set = c("MALEup_all","FEMALEup_all","MALEup_DEconcordant","FEMALEup_DEconcordant"),
   n_genes = c(length(genes_M_all), length(genes_F_all), length(genes_M_de), length(genes_F_de)),
   n_DARs  = c(length(dar_M), length(dar_F), length(dar_M), length(dar_F)),
-  window_bp = WINDOW, autosomal_only = AUTOSOMAL_ONLY),
-  file.path(OutputDirectory, "DAR_20kb_gene_counts.csv"), row.names = FALSE)
+  window_bp = WINDOW, dar_padj = DAR_PADJ, dar_abs_log2FC = DAR_LFC,
+  de_padj = DE_PADJ, autosomal_only = AUTOSOMAL_ONLY),
+  file.path(OutputDirectory, paste0("DAR_", WIN_TAG, "_gene_counts.csv")), row.names = FALSE)
 
 ## ---- Enrichr ------------------------------------------------------------------
 websiteLive <- getOption("enrichR.live")
@@ -191,10 +225,14 @@ run_enrichr <- function(genes, label, title_lab) {
 }
 
 if (RUN_ALL_SETS) {
-  run_enrichr(genes_M_all, "MALEup_DAR_20kb_all",   "Genes within 20 kb of male-up DARs (all)")
-  run_enrichr(genes_F_all, "FEMALEup_DAR_20kb_all", "Genes within 20 kb of female-up DARs (all)")
+  run_enrichr(genes_M_all, paste0("MALEup_DAR_", WIN_TAG, "_all"),
+              paste0("Genes within ", WIN_TAG, " of male-up DARs (all)"))
+  run_enrichr(genes_F_all, paste0("FEMALEup_DAR_", WIN_TAG, "_all"),
+              paste0("Genes within ", WIN_TAG, " of female-up DARs (all)"))
 }
-run_enrichr(genes_M_de,  "MALEup_DAR_20kb_DEconc",   "Male-higher DE genes within 20 kb of male-up DARs")
-run_enrichr(genes_F_de,  "FEMALEup_DAR_20kb_DEconc", "Female-higher DE genes within 20 kb of female-up DARs")
+run_enrichr(genes_M_de,  paste0("MALEup_DAR_", WIN_TAG, "_DEconc"),
+            paste0("Male-higher DE genes within ", WIN_TAG, " of male-up DARs"))
+run_enrichr(genes_F_de,  paste0("FEMALEup_DAR_", WIN_TAG, "_DEconc"),
+            paste0("Female-higher DE genes within ", WIN_TAG, " of female-up DARs"))
 
 message("\nDone -> ", OutputDirectory)
